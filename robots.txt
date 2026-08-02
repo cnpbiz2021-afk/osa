@@ -39,4 +39,4 @@ User-agent: Claude-Web
 Disallow: /
 
 # 사이트맵
-Sitemap: https://www.xn--vb0bq79a36b6zb58bc4m.site/sitemap.xml
+Sitemap: https://xn--vb0bq79a36b6zb58bc4m.site/sitemap.xml
