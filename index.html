@@ -174,6 +174,37 @@
       font-family: 'Noto Sans KR', sans-serif;
     }
 
+    /* 슬라이드쇼 스타일 추가 */
+    .slideshow-container {
+      max-width: 1000px;
+      position: relative;
+      margin: auto;
+      overflow: hidden; /* 이미지가 영역 밖으로 나가지 않도록 설정 */
+    }
+
+    .mySlides {
+      display: none;
+      width: 100%;
+      height: auto;
+    }
+
+    .mySlides img {
+      width: 100%;
+      height: 600px; /* 이미지 높이 고정 (필요에 따라 조정) */
+      object-fit: cover; /* 이미지가 비율을 유지하며 영역을 채우도록 설정 */
+    }
+
+    /* 페이드 효과 정의 */
+    .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+      from {opacity: .4}
+      to {opacity: 1}
+    }
+
     /* ✅ 전문의 소개 섹션 스타일 */
     .doctor-section {
       background: linear-gradient(135deg, #f8faff 0%, #eef4ff 100%);
@@ -385,6 +416,11 @@
       .doctor-section {
         padding: 28px 20px;
       }
+
+      /* 모바일에서 슬라이드 이미지 높이 조정 */
+      .mySlides img {
+        height: 300px;
+      }
     }
   </style>
 </head>
@@ -453,6 +489,32 @@
       <div class="hero-image">
         <!-- ✅ SEO: 이미지 ALT 키워드 최적화 -->
         <img src="sleep-patient.png" alt="부천코엔이비인후과 수면다원검사실 환경">
+      </div>
+    </div>
+  </section>
+
+  <!-- CLINIC PHOTOS SLIDESHOW - 신규 추가 -->
+  <section class="section" id="clinic-photos">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">📸 시설 안내</div>
+        <h2 class="section-title">쾌적하고 편안한 수면검사실</h2>
+        <p class="section-desc">부천코엔이비인후과는 환자분들의 편안한 검사를 위해 최상의 시설을 갖추고 있습니다.</p>
+      </div>
+
+      <div class="slideshow-container reveal">
+        <div class="mySlides fade">
+          <img src="image_0.png" alt="부천코엔이비인후과 수면검사실 대기 공간">
+        </div>
+        <div class="mySlides fade">
+          <img src="image_1.png" alt="부천코엔이비인후과 수면검사실 입구">
+        </div>
+        <div class="mySlides fade">
+          <img src="image_2.png" alt="부천코엔이비인후과 1인 수면검사실 내부 1">
+        </div>
+        <div class="mySlides fade">
+          <img src="image_3.png" alt="부천코엔이비인후과 1인 수면검사실 내부 2">
+        </div>
       </div>
     </div>
   </section>
@@ -902,6 +964,23 @@
   </footer>
 
   <script src="app.js"></script>
+  <!-- 슬라이드쇼 스크립트 추가 -->
+  <script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      let i;
+      let slides = document.getElementsByClassName("mySlides");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1}    
+      slides[slideIndex-1].style.display = "block";  
+      setTimeout(showSlides, 3000); // 3초마다 이미지 전환 (시간 조정 가능)
+    }
+  </script>
 </body>
 
 </html>
