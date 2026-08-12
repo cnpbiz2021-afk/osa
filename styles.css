@@ -469,6 +469,16 @@ img {
   font-size: 0.85rem;
   opacity: 0.9;
 }
+/* 👇 아래 코드를 추가해주세요 */
+.about-text {
+  text-align: center;
+}
+
+.about-text .section-badge {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .about-text p {
   color: var(--jh-text-secondary);
