@@ -1058,7 +1058,7 @@ img {
   }
 
   .section-title::after {
-    width: 60%; /* 모바일에서 가로줄을 자연스러운 길이로 조절 */
+    width: 80%; /* 모바일에서 가로줄을 자연스러운 길이로 조절 */
     height: 2px;
     left: 50%;
     transform: translateX(-50%);
