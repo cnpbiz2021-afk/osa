@@ -1068,4 +1068,20 @@ img {
     font-size: 0.95rem;
     word-break: keep-all; /* 단어 단위 자연스러운 줄바꿈 */
   }
+  
+  .hero-buttons {
+    flex-direction: row; /* 모바일에서도 버튼 두 개를 가로로 배치 */
+    gap: 8px; /* 버튼 사이 간격 축소 */
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 12px 14px; /* 모바일 화면에 맞춘 내부 여백 조정 */
+    font-size: 0.88rem; /* 모바일 글자 크기 미세 조정 */
+    white-space: nowrap; /* 텍스트 줄바꿈 절대 방지 */
+    flex: 1; /* 두 버튼이 균등한 폭을 가지도록 설정 */
+    max-width: 170px; /* 버튼이 너무 넓어지지 않도록 최대 폭 제한 */
+  }
 }
