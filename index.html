@@ -174,35 +174,250 @@
       font-family: 'Noto Sans KR', sans-serif;
     }
 
-    /* 슬라이드쇼 스타일 추가 */
-    .slideshow-container {
-      max-width: 1000px;
+    /* ===== 시설 안내 - 세련된 벤토형 갤러리 ===== */
+    .facility-gallery {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+
+    .facility-main,
+    .facility-thumb {
       position: relative;
-      margin: auto;
-      overflow: hidden; /* 이미지가 영역 밖으로 나가지 않도록 설정 */
+      overflow: hidden;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      background: #0f1f3a;
+      isolation: isolate;
     }
 
-    .mySlides {
-      display: none;
+    .facility-main {
+      min-height: 460px;
+    }
+
+    .facility-main img,
+    .facility-thumb img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
     }
 
-    .mySlides img {
-      width: 100%;
-      height: 600px; /* 이미지 높이 고정 (필요에 따라 조정) */
-      object-fit: cover; /* 이미지가 비율을 유지하며 영역을 채우도록 설정 */
+    .facility-main img {
+      position: absolute;
+      inset: 0;
     }
 
-    /* 페이드 효과 정의 */
-    .fade {
-      animation-name: fade;
-      animation-duration: 1.5s;
+    .facility-sub-grid {
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 20px;
     }
 
-    @keyframes fade {
-      from {opacity: .4}
-      to {opacity: 1}
+    .facility-thumb {
+      min-height: 140px;
+    }
+
+    .facility-thumb img {
+      position: absolute;
+      inset: 0;
+    }
+
+    .facility-main:hover img,
+    .facility-thumb:hover img {
+      transform: scale(1.08);
+    }
+
+    /* 하단 그라데이션 캡션 오버레이 */
+    .facility-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 6px;
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(15, 31, 58, 0) 45%, rgba(15, 31, 58, 0.78) 100%);
+      pointer-events: none;
+    }
+
+    .facility-thumb .facility-overlay {
+      padding: 16px;
+    }
+
+    .facility-tag {
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(6px);
+      padding: 4px 10px;
+      border-radius: 50px;
+    }
+
+    .facility-caption {
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .facility-thumb .facility-caption {
+      font-size: 0.95rem;
+    }
+
+    /* 확대 아이콘 */
+    .facility-zoom-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: var(--transition);
+    }
+
+    .facility-main:hover .facility-zoom-icon {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 라이트박스 */
+    .facility-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 18, 34, 0.94);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .facility-lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-stage {
+      max-width: 88vw;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      transform: scale(0.96);
+      transition: transform 0.35s ease;
+    }
+
+    .facility-lightbox.active .lightbox-stage {
+      transform: scale(1);
+    }
+
+    .lightbox-stage img {
+      max-width: 88vw;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox-caption {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      opacity: 0.9;
+      letter-spacing: -0.01em;
+    }
+
+    .lightbox-close,
+    .lightbox-nav {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .lightbox-close:hover,
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .lightbox-close {
+      top: 28px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+    }
+
+    .lightbox-nav {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    @media (max-width: 900px) {
+      .facility-gallery {
+        grid-template-columns: 1fr;
+      }
+      .facility-main {
+        min-height: 300px;
+      }
+      .facility-sub-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: none;
+      }
+      .facility-thumb {
+        min-height: 130px;
+      }
+      .lightbox-nav {
+        width: 42px;
+        height: 42px;
+        font-size: 1.4rem;
+      }
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
+    }
+
+    @media (max-width: 560px) {
+      .facility-sub-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     /* ✅ 전문의 소개 섹션 스타일 */
@@ -416,11 +631,6 @@
       .doctor-section {
         padding: 28px 20px;
       }
-
-      /* 모바일에서 슬라이드 이미지 높이 조정 */
-      .mySlides img {
-        height: 300px;
-      }
     }
   </style>
 </head>
@@ -477,8 +687,8 @@
             <div class="stat-label">누적 검사 건수</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-count="98" data-suffix="%">0</div>
-            <div class="stat-label">환자 만족도</div>
+            <div class="stat-number" data-count="5" data-suffix="년+">0</div>
+            <div class="stat-label">수면검사실 운영</div>
           </div>
           <div class="stat-item">
             <div class="stat-number" data-count="15" data-suffix="년+">0</div>
@@ -502,22 +712,53 @@
         <p class="section-desc">부천코엔이비인후과는 환자분들의 편안한 검사를 위해 최상의 시설을 갖추고 있습니다.</p>
       </div>
 
-      <div class="slideshow-container reveal">
-        <div class="mySlides fade">
-          <img src="image_0.PNG" alt="부천코엔이비인후과 수면검사실 대기 공간">
+      <div class="facility-gallery reveal">
+        <div class="facility-main" data-lightbox-index="0" tabindex="0" role="button" aria-label="사진 크게 보기">
+          <img src="image_0.png" alt="부천코엔이비인후과 수면검사실 대기 공간" loading="lazy">
+          <div class="facility-overlay">
+            <span class="facility-tag">01</span>
+            <span class="facility-caption">편안한 대기 공간</span>
+          </div>
+          <div class="facility-zoom-icon">⤢</div>
         </div>
-        <div class="mySlides fade">
-          <img src="image_1.PNG" alt="부천코엔이비인후과 수면검사실 입구">
-        </div>
-        <div class="mySlides fade">
-          <img src="image_2.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부 1">
-        </div>
-        <div class="mySlides fade">
-          <img src="image_3.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부 2">
+
+        <div class="facility-sub-grid">
+          <div class="facility-thumb" data-lightbox-index="1" tabindex="0" role="button" aria-label="사진 크게 보기">
+            <img src="image_1.png" alt="부천코엔이비인후과 1인 수면검사실 내부1" loading="lazy">
+            <div class="facility-overlay">
+              <span class="facility-tag">02</span>
+              <span class="facility-caption">1인 프라이빗 검사실 1</span>
+            </div>
+          </div>
+          <div class="facility-thumb" data-lightbox-index="2" tabindex="0" role="button" aria-label="사진 크게 보기">
+            <img src="image_2.png" alt="부천코엔이비인후과 1인 수면검사실 내부 2" loading="lazy">
+            <div class="facility-overlay">
+              <span class="facility-tag">03</span>
+              <span class="facility-caption">1인 프라이빗 검사실 2</span>
+            </div>
+          </div>
+          <div class="facility-thumb" data-lightbox-index="3" tabindex="0" role="button" aria-label="사진 크게 보기">
+            <img src="image_3.png" alt="부천코엔이비인후과 1인 수면검사실 입구" loading="lazy">
+            <div class="facility-overlay">
+              <span class="facility-tag">04</span>
+              <span class="facility-caption">조용하고 쾌적한 수면검사실 입구</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- 라이트박스 (사진 크게 보기) -->
+  <div class="facility-lightbox" id="facilityLightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="닫기">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="이전 사진">‹</button>
+    <div class="lightbox-stage">
+      <img src="" alt="" id="lightboxImage">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="다음 사진">›</button>
+  </div>
 
   <!-- ABOUT PSG -->
   <section class="section" id="about">
@@ -964,22 +1205,82 @@
   </footer>
 
   <script src="app.js"></script>
-  <!-- 슬라이드쇼 스크립트 추가 -->
+  <!-- 시설 안내 갤러리: 라이트박스 스크립트 -->
   <script>
-    let slideIndex = 0;
-    showSlides();
+    (function () {
+      const items = Array.from(document.querySelectorAll('.facility-main, .facility-thumb'));
+      if (!items.length) return;
 
-    function showSlides() {
-      let i;
-      let slides = document.getElementsByClassName("mySlides");
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";  
+      const gallery = items.map((el) => ({
+        src: el.querySelector('img').getAttribute('src'),
+        alt: el.querySelector('img').getAttribute('alt'),
+        caption: el.querySelector('.facility-caption') ? el.querySelector('.facility-caption').textContent : ''
+      }));
+
+      const lightbox = document.getElementById('facilityLightbox');
+      const lightboxImage = document.getElementById('lightboxImage');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const btnClose = document.getElementById('lightboxClose');
+      const btnPrev = document.getElementById('lightboxPrev');
+      const btnNext = document.getElementById('lightboxNext');
+      let currentIndex = 0;
+
+      function openLightbox(index) {
+        currentIndex = index;
+        updateLightbox();
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
       }
-      slideIndex++;
-      if (slideIndex > slides.length) {slideIndex = 1}    
-      slides[slideIndex-1].style.display = "block";  
-      setTimeout(showSlides, 3000); // 3초마다 이미지 전환 (시간 조정 가능)
-    }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      function updateLightbox() {
+        const item = gallery[currentIndex];
+        lightboxImage.setAttribute('src', item.src);
+        lightboxImage.setAttribute('alt', item.alt);
+        lightboxCaption.textContent = item.caption;
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
+        updateLightbox();
+      }
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % gallery.length;
+        updateLightbox();
+      }
+
+      items.forEach((el, i) => {
+        el.addEventListener('click', () => openLightbox(i));
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(i);
+          }
+        });
+      });
+
+      btnClose.addEventListener('click', closeLightbox);
+      btnPrev.addEventListener('click', showPrev);
+      btnNext.addEventListener('click', showNext);
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+      });
+    })();
   </script>
 </body>
 
