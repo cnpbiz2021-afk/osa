@@ -1051,4 +1051,21 @@ img {
     gap: 10px;
     text-align: center;
   }
+
+.section-title {
+    font-size: 1.75rem;
+    padding-bottom: 10px;
+  }
+
+  .section-title::after {
+    width: 70px; /* 모바일에서 가로줄을 자연스러운 길이로 조절 */
+    height: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .section-desc {
+    font-size: 0.95rem;
+    word-break: keep-all; /* 단어 단위 자연스러운 줄바꿈 */
+  }
 }
