@@ -1030,7 +1030,9 @@ img {
   }
 
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 1.65rem; /* 화면을 넘치지 않도록 모바일 폰트 크기 조정 */
+    white-space: nowrap; /* 한 줄로 유지되도록 줄바꿈 방지 */
+    letter-spacing: -0.5px; /* 자간을 살짝 줄여 가독성 유지 */
   }
 
   .hero-stats {
