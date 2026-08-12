@@ -1043,14 +1043,22 @@ img {
   }
 
   .process-step-content {
-    padding: 24px 20px 24px 60px;
+    padding: 20px 16px 20px 52px; /* 좌측 내부 여백 축소 */
   }
 
   .process-step-content::before {
-    left: 18px;
-    top: 20px;
-    font-size: 1.4rem;
+    left: 16px;
+    top: 22px; /* 숫자를 첫 줄 제목 텍스트 높이와 수평 정렬 */
+    font-size: 1.3rem; /* 모바일 크기에 맞춰 정갈하게 조율 */
+    line-height: 1;
   }
+
+  .process-step-content h4 {
+    margin-top: 0;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+}
 
   .footer-grid {
     grid-template-columns: 1fr;
