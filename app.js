@@ -9,7 +9,7 @@ const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobileNav');
 const mobileNavClose = document.getElementById('mobileNavClose');
 
-hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+hamburger.addEventListener('click', () => mobileNav.classList.toggle('open'));
 mobileNavClose.addEventListener('click', () => mobileNav.classList.remove('open'));
 mobileNav.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => mobileNav.classList.remove('open'));
