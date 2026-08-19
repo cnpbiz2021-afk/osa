@@ -214,7 +214,7 @@
 
     .facility-sub-grid {
       display: grid;
-      grid-template-rows: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
       gap: 20px;
     }
 
@@ -399,8 +399,8 @@
         min-height: 300px;
       }
       .facility-sub-grid {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: none;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
       }
       .facility-thumb {
         min-height: 130px;
@@ -412,12 +412,6 @@
       }
       .lightbox-prev { left: 10px; }
       .lightbox-next { right: 10px; }
-    }
-
-    @media (max-width: 560px) {
-      .facility-sub-grid {
-        grid-template-columns: 1fr 1fr;
-      }
     }
 
     /* ✅ 전문의 소개 섹션 스타일 */
@@ -742,6 +736,13 @@
             <div class="facility-overlay">
               <span class="facility-tag">04</span>
               <span class="facility-caption">조용하고 쾌적한 수면검사실 입구</span>
+            </div>
+          </div>
+          <div class="facility-thumb" data-lightbox-index="4" tabindex="0" role="button" aria-label="사진 크게 보기">
+            <img src="image_4.PNG" alt="부천코엔이비인후과 최신 수면검사장비" loading="lazy">
+            <div class="facility-overlay">
+              <span class="facility-tag">05</span>
+              <span class="facility-caption">최신 검사장비 웨인만 소나타</span>
             </div>
           </div>
         </div>
