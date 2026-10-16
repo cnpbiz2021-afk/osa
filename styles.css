@@ -1105,3 +1105,181 @@ img {
     max-width: 170px; /* 버튼이 너무 넓어지지 않도록 최대 폭 제한 */
   }
 }
+
+/* ===== 2026 TJWEB CLINIC-STYLE RESPONSIVE REDESIGN ===== */
+:root{
+  --jh-blue:#163d77;
+  --jh-blue-hover:#0e2d5c;
+  --jh-accent:#2f6db3;
+  --jh-accent-light:#edf4fb;
+  --jh-light-bg:#f6f8fb;
+  --jh-card-bg:#fff;
+  --jh-text-primary:#172033;
+  --jh-text-secondary:#68758a;
+  --jh-border:#e6ebf2;
+  --jh-shadow:0 18px 50px rgba(25,48,83,.08);
+  --jh-shadow-hover:0 24px 60px rgba(25,48,83,.14);
+  --radius:20px;
+}
+html{scroll-padding-top:92px}
+body{background:#fff;color:var(--jh-text-primary);letter-spacing:-.025em;word-break:keep-all}
+.container{max-width:1240px;padding:0 28px}
+.section{padding:120px 0}
+.section:nth-of-type(even){background:#f8fafc}
+.section-header{max-width:780px;margin:0 auto 58px}
+.section-badge{background:transparent;color:var(--jh-accent);padding:0;font-size:.84rem;font-weight:800;letter-spacing:.08em;margin-bottom:15px}
+.section-title{font-size:clamp(2rem,3.1vw,3rem);line-height:1.25;letter-spacing:-.055em;color:#172033;margin-bottom:20px}
+.section-title::after{display:none}
+.section-desc{font-size:1.06rem;line-height:1.9;color:#748096;max-width:680px;margin:0 auto}
+
+.navbar{height:86px;border:0;background:rgba(255,255,255,.94);backdrop-filter:blur(16px)}
+.navbar.scrolled{box-shadow:0 8px 30px rgba(20,40,70,.08)}
+.nav-container{height:100%;max-width:1320px;padding:0 28px}
+.nav-logo{font-size:1.18rem;gap:11px;white-space:nowrap}
+.nav-logo img{height:35px!important}
+.nav-links{height:100%;gap:0}
+.nav-links a{height:100%;display:flex;align-items:center;padding:0 16px;font-size:.92rem;font-weight:650;position:relative}
+.nav-links a::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:3px;background:var(--jh-accent);transform:scaleX(0);transition:.25s}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{border-radius:999px;padding:12px 20px;background:#173d75}
+
+.hero{min-height:790px;background:#edf3f8;margin-top:86px;justify-content:flex-start}
+.hero-bg{filter:none;background-position:center center;transform:scale(1.01)}
+.hero-overlay{background:linear-gradient(90deg,rgba(10,31,61,.90) 0%,rgba(15,45,83,.76) 38%,rgba(15,45,83,.22) 67%,rgba(15,45,83,.05) 100%)}
+.hero-content{max-width:1320px;min-height:704px;padding:80px 28px;align-items:flex-start;justify-content:center;text-align:left}
+.hero-text{max-width:760px}
+.hero-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);font-size:.86rem;padding:9px 16px;margin-bottom:25px}
+.hero-title{font-size:clamp(2.65rem,4.3vw,4.45rem);line-height:1.16;letter-spacing:-.06em;margin-bottom:26px;text-transform:none}
+.hero-title em{border:0;font-style:normal;color:#fff}
+.hero-subtitle{font-size:1.16rem;line-height:1.85;max-width:620px;margin-bottom:34px}
+.hero-buttons{justify-content:flex-start;margin-bottom:54px}
+.btn-primary,.btn-secondary{border-radius:999px;padding:15px 28px;min-width:158px;font-weight:700}
+.btn-primary{background:#fff;color:#173d75;border-color:#fff}
+.btn-primary:hover{background:#f0f5fb;color:#173d75;border-color:#f0f5fb;transform:translateY(-2px)}
+.btn-secondary{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.btn-secondary:hover{background:rgba(255,255,255,.12);color:#fff}
+.hero-stats{justify-content:flex-start;gap:0;background:rgba(9,30,59,.38);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:18px 12px;backdrop-filter:blur(10px);max-width:600px}
+.stat-item{min-width:180px;padding:0 25px;border-right:1px solid rgba(255,255,255,.22)}
+.stat-item:last-child{border-right:0}
+.stat-number{font-size:1.55rem}.stat-label{font-size:.78rem;opacity:.8}
+.hero-image{display:none}
+
+.facility-viewport{border-radius:22px}.facility-thumb{border-radius:22px;box-shadow:none}.facility-track{gap:16px}
+.about-grid{gap:72px;align-items:center}.about-image img{border-radius:26px;box-shadow:var(--jh-shadow)}
+.about-image-badge{border-radius:18px;box-shadow:var(--jh-shadow)}
+.about-text p{font-size:1.02rem;line-height:1.9;color:#657287}
+.check-items{gap:12px}.check-item{border:1px solid var(--jh-border);border-radius:14px;background:#fff;padding:15px 18px}
+.doctor-section{border-radius:28px!important;background:#f2f6fb!important;padding:56px!important;margin-top:70px!important}
+.doctor-card{border-radius:24px!important;box-shadow:none!important;border:1px solid var(--jh-border)}
+
+.indications{background:#f5f8fb!important}.indications-grid{gap:18px}.indication-card{border:1px solid var(--jh-border);border-radius:20px;padding:34px 28px;background:#fff;box-shadow:none}.indication-card:hover{transform:translateY(-6px);box-shadow:var(--jh-shadow-hover);border-color:#cdd9e8}.indication-icon{font-size:2rem;margin-bottom:24px}.indication-title{font-size:1.12rem}.indication-desc{line-height:1.75}
+.process-timeline{max-width:940px}.process-step-content{border-radius:18px;border:1px solid var(--jh-border);box-shadow:none;padding:28px 30px 28px 84px}.process-step-content:hover{box-shadow:var(--jh-shadow)}
+.insurance{background:#f5f8fb!important}.insurance-grid{gap:18px}.insurance-card{border-radius:22px;border:1px solid var(--jh-border);box-shadow:none;padding:36px 30px}.insurance-card.highlight{box-shadow:0 18px 45px rgba(35,85,145,.12)}
+.diagnosis-container{border-radius:26px;box-shadow:none;border:1px solid var(--jh-border);max-width:900px}.diagnosis-question{padding:20px 22px;border-bottom:1px solid #edf0f5}.diagnosis-btn{border-radius:999px}
+.faq-list{max-width:900px}.faq-item{border-radius:0;border:0;border-bottom:1px solid var(--jh-border);box-shadow:none;margin:0;background:#fff}.faq-item:hover{box-shadow:none}.faq-question{padding:25px 8px;font-size:1.04rem}.faq-answer-inner{padding:0 8px 28px;line-height:1.9;color:#68758a}
+.blog-section{padding:120px 0;background:#f7f9fc!important}.blog-grid{gap:18px}.blog-card{border-radius:20px!important;background:#fff!important;border:1px solid var(--jh-border)!important;padding:30px!important}.blog-card:hover{box-shadow:var(--jh-shadow)!important;border-color:#d2dce9!important}.blog-card-tag{background:#edf3fa!important;color:#285e9e!important}
+.map-card{border-radius:26px;overflow:hidden;border:1px solid var(--jh-border);box-shadow:var(--jh-shadow)}.map-frame{border-radius:0}.map-info{padding:30px}.map-link{border-radius:999px}
+.footer{background:#10233e;padding-top:70px}.footer-grid{max-width:1240px;padding:0 28px 54px}.footer-bottom{max-width:1240px;margin:0 auto;padding:24px 28px}.footer-brand{font-size:1.3rem}
+
+@media(max-width:1180px){.nav-links a{padding:0 9px;font-size:.86rem}.nav-cta{display:none}.hero-content{padding-left:48px}.hero-text{max-width:680px}}
+@media(max-width:900px){
+ .navbar{height:72px}.nav-container{padding:0 20px}.nav-links,.nav-cta{display:none}.hamburger{display:block}.hero{margin-top:72px;min-height:690px}.hero-content{min-height:618px;padding:72px 28px}.hero-overlay{background:linear-gradient(90deg,rgba(9,29,56,.88),rgba(11,38,72,.62))}.hero-text{max-width:650px}.hero-title{font-size:clamp(2.35rem,7vw,3.6rem)}
+ .section{padding:90px 0}.container{padding:0 22px}.about-grid,.insurance-grid{grid-template-columns:1fr;gap:44px}.doctor-section{padding:28px!important}.indications-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+ body{word-break:keep-all}.navbar{height:66px}.nav-container{padding:0 16px}.nav-logo{font-size:1rem}.nav-logo img{height:30px!important}.mobile-nav{padding:70px 24px 30px;gap:0;justify-content:flex-start;align-items:stretch;background:#102b50}.mobile-nav a{font-size:1.08rem;padding:15px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+ .hero{margin-top:66px;min-height:calc(100svh - 66px)}.hero-bg{background-position:64% center}.hero-overlay{background:linear-gradient(180deg,rgba(8,27,52,.50) 0%,rgba(8,28,55,.84) 52%,rgba(8,28,55,.96) 100%)}.hero-content{min-height:calc(100svh - 66px);padding:62px 20px 42px;justify-content:flex-end}.hero-badge{font-size:.76rem;margin-bottom:18px}.hero-title{font-size:clamp(2rem,10.2vw,2.85rem);white-space:normal!important;line-height:1.2;letter-spacing:-.06em;margin-bottom:18px}.hero-subtitle{font-size:.98rem;line-height:1.75;margin-bottom:26px}.hero-subtitle br{display:none}.hero-buttons{width:100%;gap:9px;margin-bottom:28px}.btn-primary,.btn-secondary{min-width:0;max-width:none!important;padding:13px 12px;font-size:.86rem;flex:1}.hero-stats{width:100%;padding:14px 4px;border-radius:14px}.stat-item{min-width:0;flex:1;padding:0 8px}.stat-number{font-size:1.15rem}.stat-label{font-size:.67rem;line-height:1.35}
+ .section,.blog-section{padding:72px 0}.container{padding:0 18px}.section-header{margin-bottom:38px}.section-title{font-size:1.85rem;line-height:1.32}.section-desc{font-size:.94rem;line-height:1.75}.facility-thumb{flex-basis:78vw;height:105vw;max-height:410px}.facility-arrow{display:none}.about-grid{gap:34px}.about-text .section-title{text-align:left!important}.doctor-section{margin:40px -2px 0!important;padding:18px!important;border-radius:20px!important}.doctor-photo{min-height:300px!important}.doctor-card .doctor-info{padding:28px 22px!important}.indications-grid{grid-template-columns:1fr;gap:12px}.indication-card{padding:26px 22px}.process-step-content{padding:22px 18px 22px 58px}.process-step-content::before{left:18px}.insurance-card{padding:28px 22px}.diagnosis-container{border-radius:18px}.diagnosis-question{padding:18px 16px}.faq-question{padding:22px 2px}.faq-answer-inner{padding:0 2px 24px}.blog-grid{grid-template-columns:1fr!important;gap:12px}.blog-card{padding:24px 21px!important}.map-info{padding:24px 20px}.footer{padding-top:54px}.footer-grid{padding:0 20px 38px}.footer-bottom{padding:22px 20px;gap:8px}.footer-grid,.footer-bottom{grid-template-columns:1fr!important;flex-direction:column;text-align:left}.footer-bottom{text-align:center}
+}
+
+/* ===== FAQ readability refinement ===== */
+.faq-item {
+  overflow: hidden;
+  transition: background-color .25s ease, border-color .25s ease;
+}
+.faq-item.active {
+  background: #f8fbff;
+  border-bottom-color: #cbd9e9;
+}
+.faq-item.active .faq-question {
+  color: #174f8f;
+  font-weight: 700;
+}
+.faq-arrow {
+  flex: 0 0 auto;
+  margin-left: 18px;
+  font-size: .72rem;
+  color: #7d8da3;
+  transition: transform .25s ease, color .25s ease;
+}
+.faq-item.active .faq-arrow {
+  transform: rotate(180deg);
+  color: #2b68aa;
+}
+.faq-answer-inner {
+  position: relative;
+  margin: 0 8px 24px;
+  padding: 22px 24px 22px 58px !important;
+  background: #edf5fd;
+  border: 1px solid #d7e6f5;
+  border-left: 4px solid #2d6eae;
+  border-radius: 12px;
+  color: #45576d !important;
+  line-height: 1.85 !important;
+}
+.faq-answer-inner::before {
+  content: 'A';
+  position: absolute;
+  left: 22px;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #245f9f;
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 800;
+  line-height: 1;
+}
+@media(max-width:640px) {
+  .faq-question { padding: 20px 4px; line-height: 1.55; gap: 12px; }
+  .faq-answer-inner {
+    margin: 0 2px 20px;
+    padding: 18px 17px 18px 49px !important;
+    border-radius: 10px;
+    font-size: .92rem;
+    line-height: 1.8 !important;
+  }
+  .faq-answer-inner::before {
+    left: 16px;
+    top: 17px;
+    width: 22px;
+    height: 22px;
+    font-size: .72rem;
+  }
+}
+
+/* ===== FAQ spacing refinement v2 ===== */
+.faq-list { max-width: 920px; }
+.faq-question {
+  padding: 25px 30px !important;
+  line-height: 1.55;
+  gap: 20px;
+}
+.faq-answer-inner {
+  margin: 0 22px 24px;
+  border-left: 1px solid #d7e6f5 !important;
+}
+@media(max-width:640px) {
+  .faq-list { width: 100%; }
+  .faq-question {
+    padding: 20px 18px !important;
+    gap: 14px;
+  }
+  .faq-answer-inner {
+    margin: 0 14px 18px;
+  }
+}
