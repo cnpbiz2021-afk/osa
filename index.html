@@ -174,63 +174,80 @@
       font-family: 'Noto Sans KR', sans-serif;
     }
 
-    /* ===== 시설 안내 - 세련된 벤토형 갤러리 ===== */
-    .facility-gallery {
-      max-width: 1100px;
+    /* ===== 시설 안내 - 자동 슬라이드 갤러리 ===== */
+    .facility-slider {
+      position: relative;
+      max-width: 1200px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 20px;
     }
 
-    .facility-main,
+    .facility-viewport {
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .facility-track {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      will-change: transform;
+    }
+
     .facility-thumb {
       position: relative;
       overflow: hidden;
+      flex: 0 0 360px;
+      height: 420px;
       border-radius: var(--radius);
       box-shadow: var(--shadow-md);
       cursor: pointer;
       background: #0f1f3a;
       isolation: isolate;
+      user-select: none;
     }
 
-    .facility-main {
-      min-height: 460px;
-    }
-
-    .facility-main img,
     .facility-thumb img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .facility-main img {
-      position: absolute;
-      inset: 0;
-    }
-
-    .facility-sub-grid {
-      display: grid;
-      grid-template-rows: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    .facility-thumb {
-      min-height: 140px;
-    }
-
-    .facility-thumb img {
-      position: absolute;
-      inset: 0;
-    }
-
-    .facility-main:hover img,
     .facility-thumb:hover img {
-      transform: scale(1.08);
+      transform: scale(1.06);
     }
+
+    .facility-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      background: rgba(15, 31, 58, 0.55);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 1.9rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .facility-arrow:hover {
+      background: rgba(59, 130, 246, 0.9);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .facility-arrow-prev { left: 14px; }
+    .facility-arrow-next { right: 14px; }
 
     /* 하단 그라데이션 캡션 오버레이 */
     .facility-overlay {
@@ -272,32 +289,6 @@
 
     .facility-thumb .facility-caption {
       font-size: 0.95rem;
-    }
-
-    /* 확대 아이콘 */
-    .facility-zoom-icon {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(6px);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      opacity: 0;
-      transform: translateY(-6px);
-      transition: var(--transition);
-    }
-
-    .facility-main:hover .facility-zoom-icon {
-      opacity: 1;
-      transform: translateY(0);
     }
 
     /* 라이트박스 */
@@ -392,18 +383,14 @@
     .lightbox-next { right: 24px; }
 
     @media (max-width: 900px) {
-      .facility-gallery {
-        grid-template-columns: 1fr;
-      }
-      .facility-main {
-        min-height: 300px;
-      }
-      .facility-sub-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-      }
       .facility-thumb {
-        min-height: 130px;
+        flex-basis: 260px;
+        height: 320px;
+      }
+      .facility-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
       }
       .lightbox-nav {
         width: 42px;
@@ -412,6 +399,26 @@
       }
       .lightbox-prev { left: 10px; }
       .lightbox-next { right: 10px; }
+    }
+
+    /* 의료진 카드 */
+    .doctor-card { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(26, 43, 94, 0.12); }
+    .doctor-photo { position: relative; min-height: 340px; background: #0f1f3a; }
+    .doctor-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center; display: block; }
+    .doctor-photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,31,58,0) 60%, rgba(255,255,255,0.0) 100%), linear-gradient(0deg, rgba(15,31,58,0.55) 0%, rgba(15,31,58,0) 40%); }
+    .doctor-photo-name { position: absolute; left: 24px; bottom: 20px; color: #fff; font-size: 1.5rem; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+    .doctor-photo-name span { font-size: 0.95rem; font-weight: 500; opacity: 0.85; margin-right: 6px; }
+    .doctor-card .doctor-info { padding: 40px 44px; display: flex; flex-direction: column; justify-content: center; }
+    .doctor-card .doctor-info .doctor-title { color: #3b82f6; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 6px; }
+    .doctor-card .doctor-info h3 { font-size: 1.7rem; margin-bottom: 22px; }
+    .doctor-career-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; color: #9aa7c2; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e3e9f5; }
+    .doctor-career-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+    .doctor-career-list li { position: relative; padding-left: 20px; color: #2d3a5c; font-size: 0.97rem; font-weight: 500; }
+    .doctor-career-list li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 0 3px #dbe8ff; }
+    @media (max-width: 760px) {
+      .doctor-card { grid-template-columns: 1fr; }
+      .doctor-photo { min-height: 280px; }
+      .doctor-card .doctor-info { padding: 28px 24px; }
     }
 
     /* ✅ 전문의 소개 섹션 스타일 */
@@ -706,46 +713,48 @@
         <p class="section-desc">부천코엔이비인후과는 환자분들의 편안한 검사를 위해 최상의 시설을 갖추고 있습니다.</p>
       </div>
 
-      <div class="facility-gallery reveal">
-        <div class="facility-main" data-lightbox-index="0" tabindex="0" role="button" aria-label="사진 크게 보기">
-          <img src="image_0.PNG" alt="부천코엔이비인후과 수면검사실 대기 공간" loading="lazy">
-          <div class="facility-overlay">
-            <span class="facility-tag">01</span>
-            <span class="facility-caption">편안한 대기 공간</span>
+      <div class="facility-slider reveal" id="facilitySlider">
+        <button class="facility-arrow facility-arrow-prev" id="facilityArrowPrev" aria-label="이전 사진">‹</button>
+        <div class="facility-viewport">
+          <div class="facility-track" id="facilityTrack">
+          <div class="facility-thumb" data-lightbox-index="0" tabindex="0" role="button" aria-label="사진 크게 보기">
+            <img src="image_0.PNG" alt="부천코엔이비인후과 수면검사실 대기 공간" loading="lazy" draggable="false">
+            <div class="facility-overlay">
+              <span class="facility-tag">01</span>
+              <span class="facility-caption">편안한 대기 공간</span>
+            </div>
           </div>
-          <div class="facility-zoom-icon">⤢</div>
-        </div>
-
-        <div class="facility-sub-grid">
           <div class="facility-thumb" data-lightbox-index="1" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_1.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부1" loading="lazy">
+            <img src="image_1.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부1" loading="lazy" draggable="false">
             <div class="facility-overlay">
               <span class="facility-tag">02</span>
               <span class="facility-caption">1인 프라이빗 검사실 1</span>
             </div>
           </div>
           <div class="facility-thumb" data-lightbox-index="2" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_2.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부 2" loading="lazy">
+            <img src="image_2.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부 2" loading="lazy" draggable="false">
             <div class="facility-overlay">
               <span class="facility-tag">03</span>
               <span class="facility-caption">1인 프라이빗 검사실 2</span>
             </div>
           </div>
           <div class="facility-thumb" data-lightbox-index="3" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_3.PNG" alt="부천코엔이비인후과 1인 수면검사실 입구" loading="lazy">
+            <img src="image_3.PNG" alt="부천코엔이비인후과 1인 수면검사실 입구" loading="lazy" draggable="false">
             <div class="facility-overlay">
               <span class="facility-tag">04</span>
               <span class="facility-caption">조용하고 쾌적한 수면검사실 입구</span>
             </div>
           </div>
           <div class="facility-thumb" data-lightbox-index="4" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_4.PNG" alt="부천코엔이비인후과 최신 수면검사장비" loading="lazy">
+            <img src="image_4.PNG" alt="부천코엔이비인후과 최신 수면검사장비" loading="lazy" draggable="false">
             <div class="facility-overlay">
               <span class="facility-tag">05</span>
               <span class="facility-caption">최신 검사장비 웨인만 소나타</span>
             </div>
           </div>
+          </div>
         </div>
+        <button class="facility-arrow facility-arrow-next" id="facilityArrowNext" aria-label="다음 사진">›</button>
       </div>
     </div>
   </section>
@@ -822,19 +831,23 @@
       <!-- ✅ E-E-A-T 강화: 전문의 소개 섹션 신규 추가 -->
       <div class="doctor-section reveal" itemscope itemtype="https://schema.org/Physician">
         <h2 style="font-size:1.35rem;font-weight:700;color:#1a2b5e;margin-bottom:28px;">수면다원검사 전문 의료진</h2>
-        <div class="doctor-profile">
-          <img src="원장사진.JPG" alt="부천코엔이비인후과 원장 최성웅"
-            style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #3b82f6;">
+        <div class="doctor-card">
+          <div class="doctor-photo">
+            <img src="doctor-profile.png" alt="부천코엔이비인후과 원장 최성웅" itemprop="image">
+            <div class="doctor-photo-fade"></div>
+            <div class="doctor-photo-name"><span>원장</span> 최성웅</div>
+          </div>
           <div class="doctor-info">
-            <h3 itemprop="name">원장 최성웅</h3>
             <div class="doctor-title" itemprop="jobTitle">이비인후과 전문의</div>
-            <div class="doctor-credentials">
-              <div class="credential-item">고려대학교 의과대학 졸업</div>
-              <div class="credential-item">고려대학교 대학원 의학과 졸업</div>
-              <div class="credential-item">수면다원검사 인증의</div>
-              <div class="credential-item">대한수면호흡학회 정회원</div>
-              <div class="credential-item">대한수면학회 정회원</div>
-            </div>
+            <h3 itemprop="name">원장 최성웅</h3>
+            <div class="doctor-career-label">CAREER</div>
+            <ul class="doctor-career-list">
+              <li>고려대학교 의과대학 졸업</li>
+              <li>고려대학교 대학원 의학과 졸업</li>
+              <li>수면다원검사 인증의</li>
+              <li>대한수면호흡학회 정회원</li>
+              <li>대한수면학회 정회원</li>
+            </ul>
           </div>
         </div>
         <p style="margin-top:24px;font-size:0.95rem;color:#4a5568;line-height:1.8;">
@@ -1205,17 +1218,68 @@
   </footer>
 
   <script src="app.js"></script>
-  <!-- 시설 안내 갤러리: 라이트박스 스크립트 -->
+  <!-- 시설 안내 갤러리: 자동 슬라이드 + 라이트박스 스크립트 -->
   <script>
     (function () {
-      const items = Array.from(document.querySelectorAll('.facility-main, .facility-thumb'));
-      if (!items.length) return;
-
-      const gallery = items.map((el) => ({
+      const track = document.getElementById('facilityTrack');
+      if (!track) return;
+      const originals = Array.from(track.children);
+      const gallery = originals.map((el) => ({
         src: el.querySelector('img').getAttribute('src'),
         alt: el.querySelector('img').getAttribute('alt'),
-        caption: el.querySelector('.facility-caption') ? el.querySelector('.facility-caption').textContent : ''
+        caption: el.querySelector('.facility-caption').textContent
       }));
+
+      // 끊김 없는 무한 루프를 위해 복제본 추가 (화면 폭을 충분히 채우도록 2세트)
+      for (let n = 0; n < 2; n++) {
+        originals.forEach((el) => {
+          const c = el.cloneNode(true);
+          c.setAttribute('aria-hidden', 'true');
+          c.setAttribute('tabindex', '-1');
+          track.appendChild(c);
+        });
+      }
+      const items = Array.from(track.children);
+
+      // --- 자동 이동 (오른쪽 → 왼쪽) ---
+      const BASE = 0.6;     // 기본 속도 (px/frame)
+      const FAST = 5;       // 화살표 호버 시 속도
+      let x = 0, vel = -BASE, target = -BASE, hoverPause = false;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { target = 0; vel = 0; }
+
+      function setLoopWidth() {
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        return originals.reduce((w, el) => w + el.getBoundingClientRect().width + gap, 0);
+      }
+      let loopW = 0;
+      function frame() {
+        if (!loopW) loopW = setLoopWidth();
+        vel += (((hoverPause ? 0 : target)) - vel) * 0.08;   // 부드러운 가감속
+        x += vel;
+        if (x <= -loopW) x += loopW;
+        if (x > 0) x -= loopW;
+        track.style.transform = 'translate3d(' + x + 'px,0,0)';
+        requestAnimationFrame(frame);
+      }
+      window.addEventListener('resize', () => { loopW = 0; });
+      requestAnimationFrame(frame);
+
+      // --- 화살표: 마우스를 올리면 해당 방향으로 빠르게 이동 ---
+      const prev = document.getElementById('facilityArrowPrev');
+      const next = document.getElementById('facilityArrowNext');
+      const setDir = (v) => { if (!reduce) target = v; };
+      prev.addEventListener('mouseenter', () => setDir(FAST));    // ‹ : 사진이 오른쪽으로
+      next.addEventListener('mouseenter', () => setDir(-FAST));   // › : 사진이 왼쪽으로
+      [prev, next].forEach((b) => b.addEventListener('mouseleave', () => setDir(-BASE)));
+      // 터치 기기: 누르고 있는 동안 이동
+      prev.addEventListener('touchstart', () => setDir(FAST), { passive: true });
+      next.addEventListener('touchstart', () => setDir(-FAST), { passive: true });
+      [prev, next].forEach((b) => b.addEventListener('touchend', () => setDir(-BASE)));
+
+      // 사진 위에 마우스를 올리면 일시정지
+      track.addEventListener('mouseenter', () => { hoverPause = true; });
+      track.addEventListener('mouseleave', () => { hoverPause = false; });
 
       const lightbox = document.getElementById('facilityLightbox');
       const lightboxImage = document.getElementById('lightboxImage');
@@ -1257,11 +1321,12 @@
       }
 
       items.forEach((el, i) => {
-        el.addEventListener('click', () => openLightbox(i));
+        const idx = i % gallery.length;
+        el.addEventListener('click', () => openLightbox(idx));
         el.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            openLightbox(i);
+            openLightbox(idx);
           }
         });
       });
