@@ -166,486 +166,54 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap"
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
+  <link rel="preload" as="image" href="hero-bg.webp" media="(min-width: 769px)">
+  <link rel="preload" as="image" href="hero-bg-m.webp" media="(max-width: 768px)">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-    }
-
-    /* ===== 시설 안내 - 자동 슬라이드 갤러리 ===== */
-    .facility-slider {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .facility-viewport {
-      overflow: hidden;
-      border-radius: var(--radius);
-    }
-
-    .facility-track {
-      display: flex;
-      gap: 20px;
-      width: max-content;
-      will-change: transform;
-    }
-
-    .facility-thumb {
-      position: relative;
-      overflow: hidden;
-      flex: 0 0 360px;
-      height: 420px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      cursor: pointer;
-      background: #0f1f3a;
-      isolation: isolate;
-      user-select: none;
-    }
-
-    .facility-thumb img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .facility-thumb:hover img {
-      transform: scale(1.06);
-    }
-
-    .facility-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 5;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      background: rgba(15, 31, 58, 0.55);
-      backdrop-filter: blur(6px);
-      color: #fff;
-      font-size: 1.9rem;
-      line-height: 1;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.25s ease, transform 0.25s ease;
-    }
-
-    .facility-arrow:hover {
-      background: rgba(59, 130, 246, 0.9);
-      transform: translateY(-50%) scale(1.08);
-    }
-
-    .facility-arrow-prev { left: 14px; }
-    .facility-arrow-next { right: 14px; }
-
-    /* 하단 그라데이션 캡션 오버레이 */
-    .facility-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      gap: 6px;
-      padding: 24px;
-      background: linear-gradient(180deg, rgba(15, 31, 58, 0) 45%, rgba(15, 31, 58, 0.78) 100%);
-      pointer-events: none;
-    }
-
-    .facility-thumb .facility-overlay {
-      padding: 16px;
-    }
-
-    .facility-tag {
-      align-self: flex-start;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(6px);
-      padding: 4px 10px;
-      border-radius: 50px;
-    }
-
-    .facility-caption {
-      color: #fff;
-      font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: -0.01em;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-    }
-
-    .facility-thumb .facility-caption {
-      font-size: 0.95rem;
-    }
-
-    /* 라이트박스 */
-    .facility-lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 3000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(10, 18, 34, 0.94);
-      backdrop-filter: blur(6px);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.35s ease, visibility 0.35s ease;
-    }
-
-    .facility-lightbox.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .lightbox-stage {
-      max-width: 88vw;
-      max-height: 82vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      transform: scale(0.96);
-      transition: transform 0.35s ease;
-    }
-
-    .facility-lightbox.active .lightbox-stage {
-      transform: scale(1);
-    }
-
-    .lightbox-stage img {
-      max-width: 88vw;
-      max-height: 72vh;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-    }
-
-    .lightbox-caption {
-      color: #fff;
-      font-weight: 600;
-      font-size: 1rem;
-      opacity: 0.9;
-      letter-spacing: -0.01em;
-    }
-
-    .lightbox-close,
-    .lightbox-nav {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-    }
-
-    .lightbox-close:hover,
-    .lightbox-nav:hover {
-      background: rgba(255, 255, 255, 0.22);
-    }
-
-    .lightbox-close {
-      top: 28px;
-      right: 28px;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      font-size: 1.1rem;
-    }
-
-    .lightbox-nav {
-      top: 50%;
-      transform: translateY(-50%);
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      font-size: 1.8rem;
-      line-height: 1;
-    }
-
-    .lightbox-prev { left: 24px; }
-    .lightbox-next { right: 24px; }
-
-    @media (max-width: 900px) {
-      .facility-thumb {
-        flex-basis: 260px;
-        height: 320px;
-      }
-      .facility-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-      }
-      .lightbox-nav {
-        width: 42px;
-        height: 42px;
-        font-size: 1.4rem;
-      }
-      .lightbox-prev { left: 10px; }
-      .lightbox-next { right: 10px; }
-    }
-
-    /* 의료진 카드 */
-    .doctor-card { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 36px rgba(26, 43, 94, 0.12); }
-    .doctor-photo { position: relative; min-height: 340px; background: #0f1f3a; }
-    .doctor-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center; display: block; }
-    .doctor-photo-fade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,31,58,0) 60%, rgba(255,255,255,0.0) 100%), linear-gradient(0deg, rgba(15,31,58,0.55) 0%, rgba(15,31,58,0) 40%); }
-    .doctor-photo-name { position: absolute; left: 24px; bottom: 20px; color: #fff; font-size: 1.5rem; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
-    .doctor-photo-name span { font-size: 0.95rem; font-weight: 500; opacity: 0.85; margin-right: 6px; }
-    .doctor-card .doctor-info { padding: 40px 44px; display: flex; flex-direction: column; justify-content: center; }
-    .doctor-card .doctor-info .doctor-title { color: #3b82f6; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; margin-bottom: 6px; }
-    .doctor-card .doctor-info h3 { font-size: 1.7rem; margin-bottom: 22px; }
-    .doctor-career-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; color: #9aa7c2; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e3e9f5; }
-    .doctor-career-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
-    .doctor-career-list li { position: relative; padding-left: 20px; color: #2d3a5c; font-size: 0.97rem; font-weight: 500; }
-    .doctor-career-list li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 0 3px #dbe8ff; }
-    @media (max-width: 760px) {
-      .doctor-card { grid-template-columns: 1fr; }
-      .doctor-photo { min-height: 280px; }
-      .doctor-card .doctor-info { padding: 28px 24px; }
-    }
-
-    /* ✅ 전문의 소개 섹션 스타일 */
-    .doctor-section {
-      background: linear-gradient(135deg, #f8faff 0%, #eef4ff 100%);
-      border-radius: 20px;
-      padding: 48px;
-      margin: 40px 0;
-    }
-
-    .doctor-profile {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-    }
-
-    .doctor-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: #e2ecff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      flex-shrink: 0;
-      border: 3px solid #3b82f6;
-    }
-
-    .doctor-info h3 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #1a2b5e;
-      margin-bottom: 6px;
-    }
-
-    .doctor-info .doctor-title {
-      color: #3b82f6;
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 16px;
-    }
-
-    .doctor-credentials {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .credential-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.93rem;
-      color: #4a5568;
-    }
-
-    .credential-item::before {
-      content: "✓";
-      color: #3b82f6;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    /* ✅ 블로그 링크 섹션 스타일 */
-    .blog-section {
-      background: #fff;
-      padding: 80px 0;
-      border-top: 1px solid #e8eef8;
-    }
-
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-
-    .blog-card {
-      background: #f8faff;
-      border: 1px solid #e2ecff;
-      border-radius: 16px;
-      padding: 28px 24px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.3s ease;
-      display: block;
-    }
-
-    .blog-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
-      border-color: #3b82f6;
-    }
-
-    .blog-card-tag {
-      display: inline-block;
-      background: #e2ecff;
-      color: #3b82f6;
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 100px;
-      margin-bottom: 14px;
-    }
-
-    .blog-card h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a2b5e;
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-
-    .blog-card p {
-      font-size: 0.88rem;
-      color: #718096;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .blog-card-link {
-      font-size: 0.85rem;
-      color: #3b82f6;
-      font-weight: 600;
-    }
-
-    /* ✅ 수면무호흡 위험성 콘텐츠 추가 스타일 */
-    .risk-content {
-      background: #fff8f5;
-      border-left: 4px solid #f97316;
-      border-radius: 0 12px 12px 0;
-      padding: 24px 28px;
-      margin: 24px 0;
-    }
-
-    .risk-content h4 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #c2410c;
-      margin-bottom: 12px;
-    }
-
-    .risk-content ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .risk-content ul li {
-      font-size: 0.93rem;
-      color: #4a5568;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .risk-content ul li::before {
-      content: "⚠️";
-      position: absolute;
-      left: 0;
-      font-size: 0.8rem;
-    }
-
-    .insurance-detail {
-      background: #f0f7ff;
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin-top: 20px;
-    }
-
-    .insurance-detail h4 {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: #1a2b5e;
-      margin-bottom: 12px;
-    }
-
-    .insurance-detail ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .insurance-detail ul li {
-      font-size: 0.9rem;
-      color: #4a5568;
-      padding-left: 18px;
-      position: relative;
-    }
-
-    .insurance-detail ul li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #3b82f6;
-      font-weight: 700;
-    }
-
-    @media (max-width: 640px) {
-      .doctor-profile {
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .doctor-section {
-        padding: 28px 20px;
-      }
-    }
-  </style>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 
 <body>
+  <!-- ICON SPRITE : 단순 라인 아이콘 (24×24, stroke) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-calendar-check" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15l2 2 4-4"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M21 16.4v2.8a1.9 1.9 0 0 1-2 1.9A17.6 17.6 0 0 1 2.9 5a1.9 1.9 0 0 1 1.9-2h2.8a1.9 1.9 0 0 1 1.9 1.6c.1.9.4 1.8.7 2.6a1.9 1.9 0 0 1-.4 2L8.6 10.4a15 15 0 0 0 5 5l1.2-1.2a1.9 1.9 0 0 1 2-.4c.8.3 1.7.6 2.6.7a1.9 1.9 0 0 1 1.6 1.9z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 12c2 0 2-5 4-5s2 10 4 10 2-10 4-10 2 10 4 10 2-5 4-5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5S3 15 3 8.8A4.8 4.8 0 0 1 12 6.5a4.8 4.8 0 0 1 9 2.3c0 6.2-9 11.7-9 11.7z"/><path d="M6.5 12h3l1.5-2.5 2 5 1.5-2.5h3"/></symbol>
+    <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h10.5A2.75 2.75 0 1 0 10.8 5M3 12h15a3 3 0 1 1-3 3M3 16h6"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></symbol>
+    <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2.5" y="7" width="17" height="10" rx="2.5"/><path d="M22 10.5v3M6.5 10.5v3"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="i-sunrise" viewBox="0 0 24 24"><path d="M12 2v6M9 5l3-3 3 3M4.9 10.9l1.4 1.4M19.1 10.9l-1.4 1.4M2 18h20M6 18a6 6 0 0 1 12 0M8 22h8"/></symbol>
+    <symbol id="i-sunset" viewBox="0 0 24 24"><path d="M12 2v6M9 5l3 3 3-3M4.9 10.9l1.4 1.4M19.1 10.9l-1.4 1.4M2 18h20M6 18a6 6 0 0 1 12 0M8 22h8"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 17v-3M12 17v-5M15 17v-2"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4 2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-alert-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16.5h.01"/></symbol>
+    <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  </svg>
+  <a class="skip-link" href="#main">본문 바로가기</a>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="#" class="nav-logo">
-        <img src="logo.png" alt="코엔이비인후과 로고" style="height:36px;width:auto;">
-        부천 코엔이비인후과
+  <!-- HEADER : 투명(히어로 위) → 스크롤 시 흰 배경 + 높이 축소 -->
+  <header class="site-header" id="navbar">
+    <div class="container header-inner">
+      <a href="#hero" class="brand" aria-label="부천 코엔이비인후과 홈">
+        <img src="logo.png" alt="" width="133" height="44">
+        <span>부천 코엔이비인후과</span>
       </a>
-      <div class="nav-links">
+      <nav class="gnb" aria-label="주요 메뉴">
         <a href="#about">수면다원검사란</a>
         <a href="#indications">대상안내</a>
         <a href="#process">검사과정</a>
@@ -653,194 +221,170 @@
         <a href="#diagnosis">자가진단</a>
         <a href="#faq">FAQ</a>
         <a href="#location">오시는 길</a>
+      </nav>
+      <div class="header-actions">
+        <a href="tel:032-677-5075" class="header-tel">032-677-5075</a>
+        <a href="https://m.booking.naver.com/booking/13/bizes/1404075" target="_blank" rel="noopener" class="btn btn-sm btn-solid">예약하기</a>
       </div>
-      <a href="https://pcmap.place.naver.com/hospital/38268928/home" target="_blank" class="nav-cta">네이버 플레이스</a>
-      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      <button class="hamburger" id="hamburger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </nav>
+  </header>
 
   <!-- MOBILE NAV -->
-  <div class="mobile-nav" id="mobileNav">
-    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
-    <a href="#about">수면다원검사란</a><a href="#indications">대상안내</a><a href="#process">검사과정</a>
-    <a href="#insurance">보험안내</a><a href="#diagnosis">자가진단</a><a href="#faq">FAQ</a><a href="#location">오시는 길</a>
+  <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+    <div class="mobile-nav-head">
+      <span class="mobile-nav-title">메뉴</span>
+      <button class="mobile-nav-close" id="mobileNavClose" type="button" aria-label="메뉴 닫기"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <nav class="mobile-nav-links" aria-label="모바일 메뉴">
+      <a href="#about">수면다원검사란</a><a href="#indications">대상안내</a><a href="#process">검사과정</a>
+      <a href="#insurance">보험안내</a><a href="#diagnosis">자가진단</a><a href="#faq">FAQ</a><a href="#location">오시는 길</a>
+    </nav>
+    <div class="mobile-nav-cta">
+      <a href="https://m.booking.naver.com/booking/13/bizes/1404075" target="_blank" rel="noopener" class="btn btn-solid btn-block"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>온라인 예약하기</a>
+      <a href="tel:032-677-5075" class="btn btn-ghost-light btn-block"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>032-677-5075</a>
+    </div>
   </div>
 
+  <main id="main">
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-particles"></div>
-    <div class="hero-content">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-content">
       <div class="hero-text">
-        <div class="hero-badge">🌙 <span>수면다원검사 전문</span> 부천코엔이비인후과</div>
+        <div class="hero-badge"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span>수면다원검사 전문</span> 부천코엔이비인후과</div>
         <!-- ✅ SEO: H1 검색어 친화적으로 수정 -->
-        <h1 class="hero-title">부천 수면다원검사<br><em>코골이·수면무호흡 정밀검사</em></h1>
-        <p class="hero-subtitle">정확한 진단이 건강한 수면의 시작입니다.<br>최신 장비(웨인만 소나타)와 전문 의료진이 함께합니다.</p>
+        <h1 class="hero-title">부천 수면다원검사<br><em><span class="nb">코골이·수면무호흡</span> <span class="nb">정밀검사</span></em></h1>
+        <p class="hero-subtitle"><span class="nb-d">정확한 진단이 건강한 수면의 시작입니다.</span> <span class="nb-d">최신 장비(웨인만 소나타)와 전문 의료진이 함께합니다.</span></p>
         <div class="hero-buttons">
-          <a href="https://m.booking.naver.com/booking/13/bizes/1404075" target="_blank" class="btn-primary">📅 온라인
-            예약하기</a>
-          <a href="#insurance" class="btn-secondary">검사 비용 안내</a>
+          <a href="https://m.booking.naver.com/booking/13/bizes/1404075" target="_blank" rel="noopener" class="btn btn-lg btn-white"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>온라인 예약하기</a>
+          <a href="#insurance" class="btn btn-lg btn-ghost-light">검사 비용 안내</a>
         </div>
-        <div class="hero-stats">
+        <dl class="hero-stats">
           <div class="stat-item">
-            <div class="stat-number" data-count="1100" data-suffix="+">0</div>
-            <div class="stat-label">누적 검사 건수</div>
+            <dt class="stat-label">누적 검사 건수</dt>
+            <dd class="stat-number" data-count="1100" data-suffix="+">1,100+</dd>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-count="5" data-suffix="년+">0</div>
-            <div class="stat-label">수면검사실 운영</div>
+            <dt class="stat-label">수면검사실 운영</dt>
+            <dd class="stat-number" data-count="5" data-suffix="년+">5년+</dd>
           </div>
           <div class="stat-item">
-            <div class="stat-number" data-count="15" data-suffix="년+">0</div>
-            <div class="stat-label">전문의 경력</div>
+            <dt class="stat-label">전문의 경력</dt>
+            <dd class="stat-number" data-count="15" data-suffix="년+">15년+</dd>
           </div>
-        </div>
-      </div>
-      <div class="hero-image">
-        <!-- ✅ SEO: 이미지 ALT 키워드 최적화 -->
-        <img src="sleep-patient.png" alt="부천코엔이비인후과 수면다원검사실 환경">
+        </dl>
       </div>
     </div>
   </section>
 
-  <!-- CLINIC PHOTOS SLIDESHOW - 신규 추가 -->
-  <section class="section" id="clinic-photos">
+  <!-- CLINIC PHOTOS -->
+  <section class="section section--tint" id="clinic-photos">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">📸 시설 안내</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">시설 안내</p>
         <h2 class="section-title">쾌적하고 편안한 수면검사실</h2>
         <p class="section-desc">부천코엔이비인후과는 환자분들의 편안한 검사를 위해 최상의 시설을 갖추고 있습니다.</p>
-      </div>
-
-      <div class="facility-slider reveal" id="facilitySlider">
-        <button class="facility-arrow facility-arrow-prev" id="facilityArrowPrev" aria-label="이전 사진">‹</button>
-        <div class="facility-viewport">
-          <div class="facility-track" id="facilityTrack">
-          <div class="facility-thumb" data-lightbox-index="0" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_0.PNG" alt="부천코엔이비인후과 수면검사실 대기 공간" loading="lazy" draggable="false">
-            <div class="facility-overlay">
-              <span class="facility-tag">01</span>
-              <span class="facility-caption">편안한 대기 공간</span>
-            </div>
+      </header>
+    </div>
+    <div class="facility-slider reveal" id="facilitySlider">
+      <button class="facility-arrow facility-arrow-prev" id="facilityArrowPrev" type="button" aria-label="이전 사진"><svg class="ic" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+      <div class="facility-viewport">
+        <div class="facility-track" id="facilityTrack">
+          <div class="facility-thumb" tabindex="0" role="button" aria-label="편안한 대기 공간 크게 보기">
+            <img src="facility-0.webp" width="640" height="480" alt="부천코엔이비인후과 수면검사실 대기 공간" loading="lazy" draggable="false">
+            <div class="facility-overlay"><span class="facility-tag">01</span><span class="facility-caption">편안한 대기 공간</span></div>
           </div>
-          <div class="facility-thumb" data-lightbox-index="1" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_1.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부1" loading="lazy" draggable="false">
-            <div class="facility-overlay">
-              <span class="facility-tag">02</span>
-              <span class="facility-caption">1인 프라이빗 검사실 1</span>
-            </div>
+          <div class="facility-thumb" tabindex="0" role="button" aria-label="1인 프라이빗 검사실 1 크게 보기">
+            <img src="facility-1.webp" width="480" height="640" alt="부천코엔이비인후과 1인 수면검사실 내부1" loading="lazy" draggable="false">
+            <div class="facility-overlay"><span class="facility-tag">02</span><span class="facility-caption">1인 프라이빗 검사실 1</span></div>
           </div>
-          <div class="facility-thumb" data-lightbox-index="2" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_2.PNG" alt="부천코엔이비인후과 1인 수면검사실 내부 2" loading="lazy" draggable="false">
-            <div class="facility-overlay">
-              <span class="facility-tag">03</span>
-              <span class="facility-caption">1인 프라이빗 검사실 2</span>
-            </div>
+          <div class="facility-thumb" tabindex="0" role="button" aria-label="1인 프라이빗 검사실 2 크게 보기">
+            <img src="facility-2.webp" width="480" height="640" alt="부천코엔이비인후과 1인 수면검사실 내부 2" loading="lazy" draggable="false">
+            <div class="facility-overlay"><span class="facility-tag">03</span><span class="facility-caption">1인 프라이빗 검사실 2</span></div>
           </div>
-          <div class="facility-thumb" data-lightbox-index="3" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_3.PNG" alt="부천코엔이비인후과 1인 수면검사실 입구" loading="lazy" draggable="false">
-            <div class="facility-overlay">
-              <span class="facility-tag">04</span>
-              <span class="facility-caption">조용하고 쾌적한 수면검사실 입구</span>
-            </div>
+          <div class="facility-thumb" tabindex="0" role="button" aria-label="수면검사실 입구 크게 보기">
+            <img src="facility-3.webp" width="640" height="480" alt="부천코엔이비인후과 1인 수면검사실 입구" loading="lazy" draggable="false">
+            <div class="facility-overlay"><span class="facility-tag">04</span><span class="facility-caption">조용하고 쾌적한 수면검사실 입구</span></div>
           </div>
-          <div class="facility-thumb" data-lightbox-index="4" tabindex="0" role="button" aria-label="사진 크게 보기">
-            <img src="image_4.PNG" alt="부천코엔이비인후과 최신 수면검사장비" loading="lazy" draggable="false">
-            <div class="facility-overlay">
-              <span class="facility-tag">05</span>
-              <span class="facility-caption">최신 검사장비 웨인만 소나타</span>
-            </div>
-          </div>
+          <div class="facility-thumb" tabindex="0" role="button" aria-label="웨인만 소나타 장비 크게 보기">
+            <img src="facility-4.webp" width="1189" height="842" alt="부천코엔이비인후과 최신 수면검사장비" loading="lazy" draggable="false">
+            <div class="facility-overlay"><span class="facility-tag">05</span><span class="facility-caption">최신 검사장비 웨인만 소나타</span></div>
           </div>
         </div>
-        <button class="facility-arrow facility-arrow-next" id="facilityArrowNext" aria-label="다음 사진">›</button>
       </div>
+      <button class="facility-arrow facility-arrow-next" id="facilityArrowNext" type="button" aria-label="다음 사진"><svg class="ic" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
     </div>
   </section>
 
-  <!-- 라이트박스 (사진 크게 보기) -->
-  <div class="facility-lightbox" id="facilityLightbox" aria-hidden="true">
-    <button class="lightbox-close" id="lightboxClose" aria-label="닫기">✕</button>
-    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="이전 사진">‹</button>
-    <div class="lightbox-stage">
+  <!-- 라이트박스 -->
+  <div class="facility-lightbox" id="facilityLightbox" aria-hidden="true" role="dialog" aria-label="시설 사진 크게 보기">
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="닫기"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="이전 사진"><svg class="ic" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+    <figure class="lightbox-stage">
       <img src="" alt="" id="lightboxImage">
-      <div class="lightbox-caption" id="lightboxCaption"></div>
-    </div>
-    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="다음 사진">›</button>
+      <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+    </figure>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="다음 사진"><svg class="ic" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
   </div>
 
-  <!-- ABOUT PSG -->
+  <!-- ABOUT PSG : PC 이미지|텍스트 2열 → 모바일 제목→이미지→설명 순서 -->
   <section class="section" id="about">
     <div class="container">
       <div class="about-grid">
-        <div class="about-image reveal">
+        <header class="about-head reveal">
+          <p class="eyebrow">검사 소개</p>
+          <h2 class="section-title">수면다원검사란 무엇인가요?</h2>
+        </header>
+        <figure class="about-image reveal">
           <!-- ✅ SEO: 이미지 ALT 최적화 -->
-          <img src="doctor.png" alt="부천코엔이비인후과 수면다원검사 전문의 상담">
-          <div class="about-image-badge">
-            <div class="badge-number">WEINMANN</div>
-            <div class="badge-text">최신 검사 장비 보유</div>
-          </div>
-        </div>
-        <div class="about-text reveal">
-          <div class="section-badge">🔬 검사 소개</div>
-          <h2 class="section-title" style="text-align:center">수면다원검사란 무엇인가요?</h2>
-          <p>수면다원검사는 코골이, 수면무호흡증, 불면증, 하지불안증후군 등 수면 질환을 진단하기 위해 <strong>잠자는 동안 발생하는 생체 신호를 실시간으로
-              기록</strong>하는 표준 검사입니다.</p>
+          <img src="doctor.webp" width="1400" height="1050" alt="부천코엔이비인후과 수면다원검사 전문의 상담" loading="lazy">
+          <figcaption class="about-image-badge">
+            <strong>WEINMANN</strong>
+            <span>최신 검사 장비 보유</span>
+          </figcaption>
+        </figure>
+        <div class="about-body reveal">
+          <p>수면다원검사는 코골이, 수면무호흡증, 불면증, 하지불안증후군 등 수면 질환을 진단하기 위해 <strong>잠자는 동안 발생하는 생체 신호를 실시간으로 기록</strong>하는 표준 검사입니다.</p>
           <p>부천코엔이비인후과의 수면검사실은 1인 프라이빗 룸으로 운영되며, 센서 부착 후 평소처럼 주무시면 됩니다. 다음날 아침 일상으로 바로 복귀하실 수 있습니다.</p>
 
-          <!-- ✅ E-E-A-T 강화: 수면무호흡 위험성 콘텐츠 추가 -->
+          <!-- ✅ E-E-A-T 강화: 수면무호흡 위험성 콘텐츠 -->
           <div class="risk-content">
-            <h4>수면무호흡증을 방치하면 위험한 이유</h4>
+            <h3>수면무호흡증을 방치하면 위험한 이유</h3>
             <ul>
-              <li>수면 중 저산소증으로 심혈관 질환 위험 증가(고혈압,부정맥,뇌졸중)</li>
+              <li>수면 중 저산소증으로 심혈관 질환 위험 증가(고혈압, 부정맥, 뇌졸중)</li>
               <li>인지 기능 저하(치매) 및 우울증 위험 상승</li>
               <li>운전·작업 중 졸음으로 인한 사고 위험</li>
             </ul>
           </div>
 
-          <div class="check-items">
-            <div class="check-item">
-              <div class="check-icon">🧠</div>
-              <div class="check-label">뇌파(EEG)</div>
-            </div>
-            <div class="check-item">
-              <div class="check-icon">👁</div>
-              <div class="check-label">안구 운동(EOG)</div>
-            </div>
-            <div class="check-item">
-              <div class="check-icon">💪</div>
-              <div class="check-label">근육 긴장도(EMG)</div>
-            </div>
-            <div class="check-item">
-              <div class="check-icon">❤️</div>
-              <div class="check-label">심전도(ECG)</div>
-            </div>
-            <div class="check-item">
-              <div class="check-icon">🫁</div>
-              <div class="check-label">호흡 기류</div>
-            </div>
-            <div class="check-item">
-              <div class="check-icon">🩸</div>
-              <div class="check-label">산소 포화도(SpO₂)</div>
-            </div>
-          </div>
+          <p class="check-caption">검사 중 측정하는 생체 신호</p>
+          <ul class="check-items">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-wave"/></svg>뇌파(EEG)</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>안구 운동(EOG)</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-zap"/></svg>근육 긴장도(EMG)</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg>심전도(ECG)</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-wind"/></svg>호흡 기류</li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-drop"/></svg>산소 포화도(SpO₂)</li>
+          </ul>
         </div>
       </div>
 
-      <!-- ✅ E-E-A-T 강화: 전문의 소개 섹션 신규 추가 -->
+      <!-- ✅ E-E-A-T 강화: 전문의 소개 -->
       <div class="doctor-section reveal" itemscope itemtype="https://schema.org/Physician">
-        <h2 style="font-size:1.35rem;font-weight:700;color:#1a2b5e;margin-bottom:28px;">수면다원검사 전문 의료진</h2>
+        <h2 class="sub-title">수면다원검사 전문 의료진</h2>
         <div class="doctor-card">
           <div class="doctor-photo">
-            <img src="doctor-profile.png" alt="부천코엔이비인후과 원장 최성웅" itemprop="image">
-            <div class="doctor-photo-fade"></div>
+            <img src="doctor-profile.webp" width="1024" height="682" alt="부천코엔이비인후과 원장 최성웅" itemprop="image" loading="lazy">
             <div class="doctor-photo-name"><span>원장</span> 최성웅</div>
           </div>
           <div class="doctor-info">
-            <div class="doctor-title" itemprop="jobTitle">이비인후과 전문의</div>
+            <p class="doctor-title" itemprop="jobTitle">이비인후과 전문의</p>
             <h3 itemprop="name">원장 최성웅</h3>
-            <div class="doctor-career-label">CAREER</div>
+            <p class="doctor-career-label">CAREER</p>
             <ul class="doctor-career-list">
               <li>고려대학교 의과대학 졸업</li>
               <li>고려대학교 대학원 의학과 졸업</li>
@@ -851,7 +395,7 @@
             </ul>
           </div>
         </div>
-        <p style="margin-top:24px;font-size:0.95rem;color:#4a5568;line-height:1.8;">
+        <p class="doctor-note">
           부천코엔이비인후과는 풍부한 임상 경험을 갖춘 이비인후과 전문의가 진료를 합니다.
           단순한 검사 시행에 그치지 않고, 검사 결과를 바탕으로 <strong>코골이 수술, 양압기(CPAP) 처방, 구강 내 장치</strong> 등
           환자 맞춤형 치료 계획까지 함께 수립합니다.
@@ -860,110 +404,106 @@
     </div>
   </section>
 
-  <!-- INDICATIONS -->
-  <section class="section indications" id="indications">
+  <!-- INDICATIONS : 4열 → 2열 → 1열 -->
+  <section class="section section--tint" id="indications">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">🎯 검사 대상</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">검사 대상</p>
         <h2 class="section-title">이런 분들에게 필요합니다</h2>
         <p class="section-desc">아래 증상 중 하나라도 해당된다면 수면다원검사를 통해 정확한 원인을 파악하세요.</p>
-      </div>
+      </header>
       <div class="indications-grid">
-        <div class="indication-card reveal">
-          <div class="indication-icon">😴</div>
+        <article class="indication-card reveal">
+          <div class="indication-icon"><svg class="ic" aria-hidden="true"><use href="#i-battery"/></svg></div>
           <h3 class="indication-title">만성 피로·주간 졸림</h3>
           <p class="indication-desc">자도 자도 피곤하고 낮에 졸음이 쏟아지는 분. 운전 중 졸음이 오는 분.</p>
-        </div>
-        <div class="indication-card reveal">
-          <div class="indication-icon">😤</div>
+        </article>
+        <article class="indication-card reveal">
+          <div class="indication-icon"><svg class="ic" aria-hidden="true"><use href="#i-sound"/></svg></div>
           <h3 class="indication-title">코골이·수면무호흡</h3>
           <p class="indication-desc">심한 코골이와 수면 중 숨을 멈추는 증상이 있는 분. 가족이 걱정하는 분.</p>
-        </div>
-        <div class="indication-card reveal">
-          <div class="indication-icon">🦵</div>
+        </article>
+        <article class="indication-card reveal">
+          <div class="indication-icon"><svg class="ic" aria-hidden="true"><use href="#i-activity"/></svg></div>
           <h3 class="indication-title">수면 중 이상 행동</h3>
           <p class="indication-desc">잠결에 발을 차거나 이상 행동을 하는 분. 이갈이가 심한 분.</p>
-        </div>
-        <div class="indication-card reveal">
-          <div class="indication-icon">🤕</div>
+        </article>
+        <article class="indication-card reveal">
+          <div class="indication-icon"><svg class="ic" aria-hidden="true"><use href="#i-sunrise"/></svg></div>
           <h3 class="indication-title">아침 두통·입마름</h3>
           <p class="indication-desc">충분히 자는데도 아침에 두통이 있거나 입이 바짝 마르는 분.</p>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
+  <!-- PROCESS : PC 가로 5단계 → 태블릿·모바일 세로 타임라인 -->
   <section class="section" id="process">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">📋 검사 과정</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">검사 과정</p>
         <h2 class="section-title">검사는 이렇게 진행됩니다</h2>
         <p class="section-desc">부담 없이 하룻밤 주무시면 됩니다. 통증은 전혀 없습니다.</p>
-      </div>
-      <div class="process-timeline">
-        <div class="process-line"></div>
-        <div class="process-step reveal">
-          <div class="process-number">1</div>
+      </header>
+      <ol class="process-timeline">
+        <li class="process-step reveal">
+          <div class="process-number" aria-hidden="true">01</div>
           <div class="process-step-content">
-            <h4>내원 및 상담</h4>
-            <div class="step-time">📍 사전 예약</div>
+            <h3>내원 및 상담</h3>
+            <span class="step-time"><svg class="ic" aria-hidden="true"><use href="#i-calendar-check"/></svg>사전 예약</span>
             <p>전문의 진료를 통해 증상을 파악하고, 수면 설문지를 작성합니다. 검사 일정을 예약합니다.</p>
           </div>
-        </div>
-        <div class="process-step reveal">
-          <div class="process-number">2</div>
+        </li>
+        <li class="process-step reveal">
+          <div class="process-number" aria-hidden="true">02</div>
           <div class="process-step-content">
-            <h4>검사 준비</h4>
-            <div class="step-time">🌆 저녁 9~10시경</div>
+            <h3>검사 준비</h3>
+            <span class="step-time"><svg class="ic" aria-hidden="true"><use href="#i-sunset"/></svg>저녁 9~10시경</span>
             <p>편안한 검사실에서 환복 후 비침습적 센서를 부착합니다. 통증은 전혀 없습니다.</p>
           </div>
-        </div>
-        <div class="process-step reveal">
-          <div class="process-number">3</div>
+        </li>
+        <li class="process-step reveal">
+          <div class="process-number" aria-hidden="true">03</div>
           <div class="process-step-content">
-            <h4>수면 진행</h4>
-            <div class="step-time">🌙 취침 시간</div>
+            <h3>수면 진행</h3>
+            <span class="step-time"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>취침 시간</span>
             <p>평소처럼 편안하게 주무시면 됩니다. 수면 중 모든 생체 데이터가 자동 기록됩니다.</p>
           </div>
-        </div>
-        <div class="process-step reveal">
-          <div class="process-number">4</div>
+        </li>
+        <li class="process-step reveal">
+          <div class="process-number" aria-hidden="true">04</div>
           <div class="process-step-content">
-            <h4>귀가</h4>
-            <div class="step-time">☀️ 익일 오전</div>
+            <h3>귀가</h3>
+            <span class="step-time"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>익일 오전</span>
             <p>아침에 센서를 제거하고 퇴원합니다. 일상생활에 지장이 없습니다.</p>
           </div>
-        </div>
-        <div class="process-step reveal">
-          <div class="process-number">5</div>
+        </li>
+        <li class="process-step reveal">
+          <div class="process-number" aria-hidden="true">05</div>
           <div class="process-step-content">
-            <h4>결과 상담</h4>
-            <div class="step-time">📊 약 1~2주 후</div>
+            <h3>결과 상담</h3>
+            <span class="step-time"><svg class="ic" aria-hidden="true"><use href="#i-report"/></svg>약 1~2주 후</span>
             <p>전문의가 데이터를 분석하여 진단 결과를 설명하고, 맞춤 치료 계획을 수립합니다.</p>
           </div>
-        </div>
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 
   <!-- INSURANCE -->
-  <section class="section insurance" id="insurance">
+  <section class="section section--tint" id="insurance">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">💳 비용 안내</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">비용 안내</p>
         <h2 class="section-title">건강보험 적용으로 부담 없이</h2>
         <p class="section-desc">의학적으로 필요한 경우 건강보험이 적용되어 합리적인 비용으로 검사가 가능합니다.</p>
-      </div>
-      <div class="insurance-grid reveal">
-        <div class="insurance-card highlight">
-          <div class="insurance-icon">🏥</div>
+      </header>
+      <div class="insurance-grid">
+        <article class="insurance-card highlight reveal">
           <h3>국민건강보험 적용</h3>
           <p>수면무호흡증, 렘수면장애 등이 의심되어 의학적으로 필요한 경우</p>
-          <div class="insurance-percent">검사비의 약 20%</div>
+          <p class="insurance-percent">검사비의 약 20%</p>
           <p>환자 본인 부담금 수준</p>
-
-          <!-- ✅ 콘텐츠 강화: 건강보험 기준 상세 추가 -->
           <div class="insurance-detail">
             <h4>건강보험 적용 주요 기준</h4>
             <ul>
@@ -973,60 +513,39 @@
               <li>검사 결과에 따라 수면무호흡증 진단 및 양압기 건강보험 적용 여부 결정</li>
             </ul>
           </div>
-        </div>
-        <div class="insurance-card">
-          <div class="insurance-icon">🛡️</div>
+        </article>
+        <article class="insurance-card reveal">
           <h3>실손보험 적용 안내</h3>
           <p>수면다원검사는 건강보험 적용 대상이므로 대부분의 실손의료보험에서 검사 비용을 보장합니다. 자세한 사항은 가입하신 보험의 보장 내역을 확인해 주세요.</p>
-          <p style="margin-top:14px;font-size:0.91rem;color:#4a5568;line-height:1.7;">
-            수면다원검사는 건강보험 적용 시 본인부담금이 크게 줄어들며,
-            여기에 실손보험까지 청구하면 실제 환자 부담은 더욱 낮아질 수 있습니다. 실손보험 약관에 따라 환급금액이 달라질 수 있으므로 참고하시기 바랍니다.
-          </p>
-          <div class="insurance-detail" style="margin-top:20px;">
-            <p style="font-size:0.94rem;font-weight:700;color:#1a2b5e;margin-bottom:8px;">📞 비용 문의 032-677-5075</p>
-            <p style="font-size:0.9rem;color:#4a5568;line-height:1.6;">정확한 비용은 보험 적용 여부에 따라 달라질 수 있습니다. 전화 상담을 통해 자세히
-              안내받으세요.(아래 수면 건강 전문 칼럼에 링크된 내용을 참고하셔도 좋습니다.)</p>
+          <p>수면다원검사는 건강보험 적용 시 본인부담금이 크게 줄어들며, 여기에 실손보험까지 청구하면 실제 환자 부담은 더욱 낮아질 수 있습니다. 실손보험 약관에 따라 환급금액이 달라질 수 있으므로 참고하시기 바랍니다.</p>
+          <div class="insurance-detail insurance-contact">
+            <a class="insurance-tel" href="tel:032-677-5075"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>비용 문의 032-677-5075</a>
+            <p>정확한 비용은 보험 적용 여부에 따라 달라질 수 있습니다. 전화 상담을 통해 자세히 안내받으세요.(아래 수면 건강 전문 칼럼에 링크된 내용을 참고하셔도 좋습니다.)</p>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- SELF DIAGNOSIS -->
-  <section class="section diagnosis" id="diagnosis">
+  <section class="section" id="diagnosis">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">✅ 자가진단</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">자가진단</p>
         <h2 class="section-title">수면의 질 체크리스트</h2>
         <p class="section-desc">해당하는 항목을 체크하고 결과를 확인해 보세요.</p>
-      </div>
+      </header>
       <div class="diagnosis-container reveal">
-        <div class="diagnosis-question"><label for="q1">코골이가 심하다는 말을 자주 듣습니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q1"><label class="toggle-slider" for="q1"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q2">자는 동안 숨이 멈추거나 헐떡인 적이 있습니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q2"><label class="toggle-slider" for="q2"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q3">충분히 잤는데도 낮에 졸립고 피곤합니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q3"><label class="toggle-slider" for="q3"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q4">아침에 일어나면 두통이 있거나 입이 마릅니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q4"><label class="toggle-slider" for="q4"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q5">잠들기 어렵거나 자주 깹니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q5"><label class="toggle-slider" for="q5"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q6">수면 중 발을 차거나 이상 행동을 합니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q6"><label class="toggle-slider" for="q6"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q7">집중력이 떨어지고 기억력이 나빠졌습니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q7"><label class="toggle-slider" for="q7"></label></div>
-        </div>
-        <div class="diagnosis-question"><label for="q8">고혈압, 당뇨 등 만성질환이 있습니다.</label>
-          <div class="toggle-switch"><input type="checkbox" id="q8"><label class="toggle-slider" for="q8"></label></div>
-        </div>
-        <button class="diagnosis-btn" id="diagnosisBtn">결과 확인하기</button>
-        <div class="diagnosis-result" id="diagnosisResult">
+        <label class="diagnosis-question" for="q1"><span>코골이가 심하다는 말을 자주 듣습니다.</span><span class="toggle-switch"><input type="checkbox" id="q1"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q2"><span>자는 동안 숨이 멈추거나 헐떡인 적이 있습니다.</span><span class="toggle-switch"><input type="checkbox" id="q2"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q3"><span>충분히 잤는데도 낮에 졸립고 피곤합니다.</span><span class="toggle-switch"><input type="checkbox" id="q3"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q4"><span>아침에 일어나면 두통이 있거나 입이 마릅니다.</span><span class="toggle-switch"><input type="checkbox" id="q4"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q5"><span>잠들기 어렵거나 자주 깹니다.</span><span class="toggle-switch"><input type="checkbox" id="q5"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q6"><span>수면 중 발을 차거나 이상 행동을 합니다.</span><span class="toggle-switch"><input type="checkbox" id="q6"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q7"><span>집중력이 떨어지고 기억력이 나빠졌습니다.</span><span class="toggle-switch"><input type="checkbox" id="q7"><span class="toggle-slider"></span></span></label>
+        <label class="diagnosis-question" for="q8"><span>고혈압, 당뇨 등 만성질환이 있습니다.</span><span class="toggle-switch"><input type="checkbox" id="q8"><span class="toggle-slider"></span></span></label>
+        <button class="btn btn-lg btn-solid btn-block diagnosis-btn" id="diagnosisBtn" type="button">결과 확인하기</button>
+        <div class="diagnosis-result" id="diagnosisResult" aria-live="polite">
           <div class="result-icon"></div>
           <div class="result-title"></div>
           <div class="result-desc"></div>
@@ -1036,318 +555,158 @@
   </section>
 
   <!-- FAQ -->
-  <section class="section" id="faq">
+  <section class="section section--tint" id="faq">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">❓ 자주 묻는 질문(FAQ)</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">자주 묻는 질문(FAQ)</p>
         <h2 class="section-title">궁금한 점을 해결해 드립니다</h2>
-      </div>
+      </header>
       <div class="faq-list reveal">
         <div class="faq-item">
-          <div class="faq-question">수면다원검사할 때 아픈가요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">전혀 아프지 않습니다. 피부에 부착하는 센서는 모두 비침습적이며, 접착 스티커와 밴드로 고정합니다. 검사 후에도 흔적이 거의 남지 않습니다.
-            </div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">수면다원검사할 때 아픈가요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">전혀 아프지 않습니다. 피부에 부착하는 센서는 모두 비침습적이며, 접착 스티커와 밴드로 고정합니다. 검사 후에도 흔적이 거의 남지 않습니다.</div></div>
         </div>
-        <!-- ✅ FAQ 추가: 비용 질문 - 주요 검색어 -->
+        <!-- ✅ FAQ: 비용 질문 - 주요 검색어 -->
         <div class="faq-item">
-          <div class="faq-question">수면다원검사 비용은 얼마인가요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">건강보험 적용 시 환자 본인 부담금은 약 20% 수준입니다. 수면무호흡증이나 기면증이 의심되는 경우 보험이 적용됩니다. 정확한 금액은 보험
-              적용 여부에 따라 달라지므로 <strong>032-677-5075</strong>로 문의 주시면 자세히 안내해 드립니다.
-            </div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">수면다원검사 비용은 얼마인가요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">건강보험 적용 시 환자 본인 부담금은 약 20% 수준입니다. 수면무호흡증이나 기면증이 의심되는 경우 보험이 적용됩니다. 정확한 금액은 보험 적용 여부에 따라 달라지므로 <strong>032-677-5075</strong>로 문의 주시면 자세히 안내해 드립니다.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">센서를 붙이고 잠이 올까요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">처음에는 어색할 수 있지만, 대부분의 환자분들이 잘 주무십니다. 평소 수면 시간의 약 80% 이상 수면을 취하시면 충분한 데이터를 얻을 수
-              있습니다.</div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">센서를 붙이고 잠이 올까요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">처음에는 어색할 수 있지만, 대부분의 환자분들이 잘 주무십니다. 평소 수면 시간의 약 80% 이상 수면을 취하시면 충분한 데이터를 얻을 수 있습니다.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">약 복용은 어떻게 하나요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">평소 복용하는 약은 그대로 드셔도 됩니다. 다만, 수면제나 신경안정제 등은 전문의와 상의 후 조정이 필요할 수 있습니다. 예약 시 복용
-              약물을 알려주세요.</div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">약 복용은 어떻게 하나요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">평소 복용하는 약은 그대로 드셔도 됩니다. 다만, 수면제나 신경안정제 등은 전문의와 상의 후 조정이 필요할 수 있습니다. 예약 시 복용 약물을 알려주세요.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">세면도구를 챙겨야 하나요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">기본 세면도구와 수건이 비치되어 있습니다. 편안한 잠옷과 개인 세면용품을 가져오시면 더욱 좋습니다. 검사실은 1인실로 프라이버시가
-              보장됩니다.</div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">세면도구를 챙겨야 하나요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">기본 세면도구와 수건이 비치되어 있습니다. 편안한 잠옷과 개인 세면용품을 가져오시면 더욱 좋습니다. 검사실은 1인실로 프라이버시가 보장됩니다.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">검사 결과는 언제 나오나요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">검사 데이터 분석에 약 1~2주가 소요됩니다. 결과가 나오면 연락 드리며, 내원하시어 전문의와 상담하고 치료 계획을 세우게 됩니다.
-            </div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">검사 결과는 언제 나오나요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">검사 데이터 분석에 약 1~2주가 소요됩니다. 결과가 나오면 연락 드리며, 내원하시어 전문의와 상담하고 치료 계획을 세우게 됩니다.</div></div>
         </div>
         <div class="faq-item">
-          <div class="faq-question">주차는 가능한가요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">네, 낮에 외래 내원시 건물 내 주차장 이용이 가능합니다. 하지만 수면검사시에는 주차가 불가하여, 검사 당일에는 주변 공영주차장에 주차하시고
-              영수증 지참하시면 주차비 지원해드립니다.
-            </div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">주차는 가능한가요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">네, 낮에 외래 내원시 건물 내 주차장 이용이 가능합니다. 하지만 수면검사시에는 주차가 불가하여, 검사 당일에는 주변 공영주차장에 주차하시고 영수증 지참하시면 주차비 지원해드립니다.</div></div>
         </div>
-        <!-- ✅ FAQ 추가: 양압기 연계 질문 -->
+        <!-- ✅ FAQ: 양압기 연계 질문 -->
         <div class="faq-item">
-          <div class="faq-question">수면다원검사 후 양압기(CPAP)를 처방받을 수 있나요?<span class="faq-arrow">▼</span></div>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">네, 수면다원검사에서 수면무호흡증이 확인된 경우 양압기(CPAP) 처방이 가능합니다. 양압기 역시 건강보험 적용이 되며, 전문의 상담을 통해
-              최적의 치료 방법을 결정합니다. 수술적 치료, 구강 내 장치 등 다양한 옵션을 함께 안내해 드립니다.
-            </div>
-          </div>
+          <button class="faq-question" type="button" aria-expanded="false">수면다원검사 후 양압기(CPAP)를 처방받을 수 있나요?<span class="faq-arrow" aria-hidden="true"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">네, 수면다원검사에서 수면무호흡증이 확인된 경우 양압기(CPAP) 처방이 가능합니다. 양압기 역시 건강보험 적용이 되며, 전문의 상담을 통해 최적의 치료 방법을 결정합니다. 수술적 치료, 구강 내 장치 등 다양한 옵션을 함께 안내해 드립니다.</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ✅ 신규 섹션: 수면 건강 정보 블로그 링크 - 네이버 블로그 시너지 -->
-  <section class="blog-section" id="blog">
+  <!-- BLOG : 4열 → 2열 → 1열 -->
+  <section class="section" id="blog">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">📝 수면 건강 정보</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">수면 건강 정보</p>
         <h2 class="section-title">수면 건강 전문 칼럼</h2>
         <p class="section-desc">이비인후과 전문의가 작성한 수면 건강 정보를 확인하세요.</p>
-      </div>
-      <div class="blog-grid reveal">
-        <a href="https://blog.naver.com/necter81/224244481289" target="_blank" class="blog-card"
-          aria-label="코골이가 위험한 이유 블로그 글">
-          <div class="blog-card-tag">코골이</div>
-          <h4>코골이, 잠을 자도 피곤하다면?</h4>
+      </header>
+      <div class="blog-grid">
+        <a href="https://blog.naver.com/necter81/224244481289" target="_blank" rel="noopener" class="blog-card reveal" aria-label="코골이가 위험한 이유 블로그 글">
+          <span class="blog-card-tag">코골이</span>
+          <h3>코골이, 잠을 자도 피곤하다면?</h3>
           <p>단순 소음 문제가 아닌 코골이, 만성피로를 일으키는 수면무호흡증의 신호일 수 있습니다.</p>
-          <div class="blog-card-link">자세히 보기 →</div>
+          <span class="blog-card-link">자세히 보기<svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
         </a>
-        <a href="https://blog.naver.com/necter81/223839265621" target="_blank" class="blog-card"
-          aria-label="수면무호흡 자가진단 블로그 글">
-          <div class="blog-card-tag">수면무호흡증</div>
-          <h4>수면무호흡증 증상</h4>
+        <a href="https://blog.naver.com/necter81/223839265621" target="_blank" rel="noopener" class="blog-card reveal" aria-label="수면무호흡 자가진단 블로그 글">
+          <span class="blog-card-tag">수면무호흡증</span>
+          <h3>수면무호흡증 증상</h3>
           <p>수면무호흡증, 꼭 확인해야할 7가지 신호로 건강의 위기를 예방하세요.</p>
-          <div class="blog-card-link">자세히 보기 →</div>
+          <span class="blog-card-link">자세히 보기<svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
         </a>
-        <a href="https://blog.naver.com/necter81/224218833248" target="_blank" class="blog-card"
-          aria-label="양압기 치료 안내 블로그 글">
-          <div class="blog-card-tag">양압기</div>
-          <h4>양압기(CPAP) 치료가 필요한 이유</h4>
+        <a href="https://blog.naver.com/necter81/224218833248" target="_blank" rel="noopener" class="blog-card reveal" aria-label="양압기 치료 안내 블로그 글">
+          <span class="blog-card-tag">양압기</span>
+          <h3>양압기(CPAP) 치료가 필요한 이유</h3>
           <p>양압기 치료가 왜 필요한지, 어떤 환자에게 도움이 되는지 알아봅니다.</p>
-          <div class="blog-card-link">자세히 보기 →</div>
+          <span class="blog-card-link">자세히 보기<svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
         </a>
-        <a href="https://blog.naver.com/necter81/224124588125" target="_blank" class="blog-card"
-          aria-label="수면다원검사 비용 블로그 글">
-          <div class="blog-card-tag">비용 안내</div>
-          <h4>수면다원검사 비용 및 건강보험 혜택 총정리</h4>
+        <a href="https://blog.naver.com/necter81/224124588125" target="_blank" rel="noopener" class="blog-card reveal" aria-label="수면다원검사 비용 블로그 글">
+          <span class="blog-card-tag">비용 안내</span>
+          <h3>수면다원검사 비용 및 건강보험 혜택 총정리</h3>
           <p>2026년 기준 건강보험 적용 조건, 실제 환자 부담금까지 상세하게 정리했습니다.</p>
-          <div class="blog-card-link">자세히 보기 →</div>
+          <span class="blog-card-link">자세히 보기<svg class="ic" aria-hidden="true"><use href="#i-arrow-r"/></svg></span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- MAP / LOCATION -->
-  <section class="section map-section" id="location">
+  <!-- LOCATION : PC 지도|정보 2열 → 모바일 세로 -->
+  <section class="section section--tint" id="location">
     <div class="container">
-      <div class="section-header reveal">
-        <div class="section-badge">📍 오시는 길</div>
+      <header class="section-header reveal">
+        <p class="eyebrow">오시는 길</p>
         <h2 class="section-title">지금 부천 코엔이비인후과를 방문하세요</h2>
         <p class="section-desc">부천에서 수면다원검사 잘하는 병원을 찾으신다면 아래 지도를 클릭해주세요</p>
-      </div>
-      <div class="map-grid">
-        <div class="map-card reveal">
-          <a href="https://map.naver.com/p/entry/place/38268928" target="_blank" class="map-img-container">
-            <!-- ✅ 이미지 ALT 최적화 -->
-            <img src="clinic_map_bucheon.png" alt="부천코엔이비인후과 수면다원검사 병원 위치 지도" class="map-frame">
-          </a>
-          <div class="map-info">
-            <h3>부천코엔이비인후과</h3>
-            <div class="map-detail"><svg width="16" height="16" fill="none" stroke="#718096" stroke-width="2">
-                <path d="M8 1C5.2 1 3 3.2 3 6c0 4 5 9 5 9s5-5 5-9c0-2.8-2.2-5-5-5z" />
-                <circle cx="8" cy="6" r="2" />
-              </svg>경기도 부천시 소사로 754, 3층</div>
-            <div class="map-detail"><svg width="16" height="16" fill="none" stroke="#718096" stroke-width="2">
-                <path d="M1 4l7-3 7 3v8l-7 3-7-3z" />
-                <path d="M1 4l7 3m0 0l7-3M8 7v8" />
-              </svg>건물 내 주차 가능</div>
-            <a href="https://map.naver.com/p/entry/place/38268928" target="_blank" class="map-link">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="#fff">
-                <path d="M9 0C4.03 0 0 4.03 0 9s4.03 9 9 9 9-4.03 9-9S13.97 0 9 0zm1 13H8v-2h2v2zm0-4H8V5h2v4z" />
-              </svg>
-              네이버 지도에서 보기
-            </a>
+      </header>
+      <div class="map-card reveal">
+        <a href="https://map.naver.com/p/entry/place/38268928" target="_blank" rel="noopener" class="map-img" aria-label="네이버 지도에서 위치 보기">
+          <!-- ✅ 이미지 ALT 최적화 -->
+          <img src="clinic-map.webp" width="408" height="381" alt="부천코엔이비인후과 수면다원검사 병원 위치 지도" loading="lazy">
+        </a>
+        <div class="map-info">
+          <h3>부천코엔이비인후과</h3>
+          <dl class="map-details">
+            <div><dt>주소</dt><dd>경기도 부천시 소사로 754, 3층</dd></div>
+            <div><dt>전화</dt><dd><a href="tel:032-677-5075">032-677-5075</a></dd></div>
+            <div><dt>진료</dt><dd>평일 09:30–19:00<br>토요일 09:30–14:00</dd></div>
+            <div><dt>주차</dt><dd>건물 내 주차 가능<br><small>(수면검사 당일은 주변 공영주차장 이용, 주차비 지원)</small></dd></div>
+          </dl>
+          <div class="map-actions">
+            <a href="https://map.naver.com/p/entry/place/38268928" target="_blank" rel="noopener" class="btn btn-naver"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>네이버 지도에서 보기</a>
+            <a href="https://pcmap.place.naver.com/hospital/38268928/home" target="_blank" rel="noopener" class="btn btn-outline">네이버 플레이스</a>
           </div>
         </div>
       </div>
     </div>
   </section>
+  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-grid">
+    <div class="container footer-grid">
       <div>
-        <div class="footer-brand">부천코엔이비인후과</div>
-        <p class="footer-desc">부천 수면다원검사 전문 의료기관. 정확한 진단과 맞춤 치료로 건강한 수면을 되찾아 드립니다. 최신 장비(웨인만 소나타)와 풍부한 경험의 전문 의료진이
-          함께합니다.
-        </p>
+        <p class="footer-brand">부천코엔이비인후과</p>
+        <p class="footer-desc">부천 수면다원검사 전문 의료기관. 정확한 진단과 맞춤 치료로 건강한 수면을 되찾아 드립니다. 최신 장비(웨인만 소나타)와 풍부한 경험의 전문 의료진이 함께합니다.</p>
       </div>
       <div>
         <h4>바로가기</h4>
-        <div class="footer-links">
+        <nav class="footer-links footer-links--2col" aria-label="푸터 바로가기">
           <a href="#about">수면다원검사란</a><a href="#indications">검사 대상</a>
           <a href="#process">검사 과정</a><a href="#insurance">보험 안내</a>
           <a href="#diagnosis">자가진단</a><a href="#faq">FAQ</a>
           <a href="#blog">수면 건강 칼럼</a>
-        </div>
+        </nav>
       </div>
       <div>
         <h4>진료 안내</h4>
         <div class="footer-links">
           <a href="#location">부천코엔이비인후과</a>
           <a href="#insurance">검사 비용 안내</a>
-          <a href="tel:032-677-5075">📞 032-677-5075</a>
+          <a href="tel:032-677-5075"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>032-677-5075</a>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
+    <div class="container footer-bottom">
       <span>© 2026 부천코엔이비인후과. All rights reserved.</span>
       <span>본 사이트의 정보는 참고용이며, 정확한 진단은 전문의 상담이 필요합니다.</span>
     </div>
   </footer>
 
+  <!-- 모바일 하단 고정 CTA -->
+  <nav class="mobile-cta" aria-label="빠른 연락">
+    <a href="tel:032-677-5075"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>전화</a>
+    <a href="https://m.booking.naver.com/booking/13/bizes/1404075" target="_blank" rel="noopener" class="is-primary"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>예약</a>
+    <a href="#location"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>오시는 길</a>
+  </nav>
+
   <script src="app.js"></script>
-  <!-- 시설 안내 갤러리: 자동 슬라이드 + 라이트박스 스크립트 -->
-  <script>
-    (function () {
-      const track = document.getElementById('facilityTrack');
-      if (!track) return;
-      const originals = Array.from(track.children);
-      const gallery = originals.map((el) => ({
-        src: el.querySelector('img').getAttribute('src'),
-        alt: el.querySelector('img').getAttribute('alt'),
-        caption: el.querySelector('.facility-caption').textContent
-      }));
-
-      // 끊김 없는 무한 루프를 위해 복제본 추가 (화면 폭을 충분히 채우도록 2세트)
-      for (let n = 0; n < 2; n++) {
-        originals.forEach((el) => {
-          const c = el.cloneNode(true);
-          c.setAttribute('aria-hidden', 'true');
-          c.setAttribute('tabindex', '-1');
-          track.appendChild(c);
-        });
-      }
-      const items = Array.from(track.children);
-
-      // --- 자동 이동 (오른쪽 → 왼쪽) ---
-      const BASE = 0.6;     // 기본 속도 (px/frame)
-      const FAST = 5;       // 화살표 호버 시 속도
-      let x = 0, vel = -BASE, target = -BASE, hoverPause = false;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { target = 0; vel = 0; }
-
-      function setLoopWidth() {
-        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-        return originals.reduce((w, el) => w + el.getBoundingClientRect().width + gap, 0);
-      }
-      let loopW = 0;
-      function frame() {
-        if (!loopW) loopW = setLoopWidth();
-        vel += (((hoverPause ? 0 : target)) - vel) * 0.08;   // 부드러운 가감속
-        x += vel;
-        if (x <= -loopW) x += loopW;
-        if (x > 0) x -= loopW;
-        track.style.transform = 'translate3d(' + x + 'px,0,0)';
-        requestAnimationFrame(frame);
-      }
-      window.addEventListener('resize', () => { loopW = 0; });
-      requestAnimationFrame(frame);
-
-      // --- 화살표: 마우스를 올리면 해당 방향으로 빠르게 이동 ---
-      const prev = document.getElementById('facilityArrowPrev');
-      const next = document.getElementById('facilityArrowNext');
-      const setDir = (v) => { if (!reduce) target = v; };
-      prev.addEventListener('mouseenter', () => setDir(FAST));    // ‹ : 사진이 오른쪽으로
-      next.addEventListener('mouseenter', () => setDir(-FAST));   // › : 사진이 왼쪽으로
-      [prev, next].forEach((b) => b.addEventListener('mouseleave', () => setDir(-BASE)));
-      // 터치 기기: 누르고 있는 동안 이동
-      prev.addEventListener('touchstart', () => setDir(FAST), { passive: true });
-      next.addEventListener('touchstart', () => setDir(-FAST), { passive: true });
-      [prev, next].forEach((b) => b.addEventListener('touchend', () => setDir(-BASE)));
-
-      // 사진 위에 마우스를 올리면 일시정지
-      track.addEventListener('mouseenter', () => { hoverPause = true; });
-      track.addEventListener('mouseleave', () => { hoverPause = false; });
-
-      const lightbox = document.getElementById('facilityLightbox');
-      const lightboxImage = document.getElementById('lightboxImage');
-      const lightboxCaption = document.getElementById('lightboxCaption');
-      const btnClose = document.getElementById('lightboxClose');
-      const btnPrev = document.getElementById('lightboxPrev');
-      const btnNext = document.getElementById('lightboxNext');
-      let currentIndex = 0;
-
-      function openLightbox(index) {
-        currentIndex = index;
-        updateLightbox();
-        lightbox.classList.add('active');
-        lightbox.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeLightbox() {
-        lightbox.classList.remove('active');
-        lightbox.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      }
-
-      function updateLightbox() {
-        const item = gallery[currentIndex];
-        lightboxImage.setAttribute('src', item.src);
-        lightboxImage.setAttribute('alt', item.alt);
-        lightboxCaption.textContent = item.caption;
-      }
-
-      function showPrev() {
-        currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
-        updateLightbox();
-      }
-
-      function showNext() {
-        currentIndex = (currentIndex + 1) % gallery.length;
-        updateLightbox();
-      }
-
-      items.forEach((el, i) => {
-        const idx = i % gallery.length;
-        el.addEventListener('click', () => openLightbox(idx));
-        el.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openLightbox(idx);
-          }
-        });
-      });
-
-      btnClose.addEventListener('click', closeLightbox);
-      btnPrev.addEventListener('click', showPrev);
-      btnNext.addEventListener('click', showNext);
-
-      lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') showPrev();
-        if (e.key === 'ArrowRight') showNext();
-      });
-    })();
-  </script>
 </body>
 
 </html>
